@@ -1,6 +1,6 @@
 //
 //  ContentView.swift
-//  Morume
+//  MoruMe
 //
 //  Created by 青原光 on 2025/05/15.
 //

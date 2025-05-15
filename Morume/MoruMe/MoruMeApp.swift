@@ -1,5 +1,5 @@
 //
-//  MorumeApp.swift
+//  MoruMeApp.swift
 //  Morume
 //
 //  Created by 青原光 on 2025/05/15.
@@ -8,7 +8,7 @@
 import SwiftUI
 
 @main
-struct MorumeApp: App {
+struct MoruMeApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
