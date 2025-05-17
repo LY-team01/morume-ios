@@ -21,16 +21,24 @@ struct CameraPickerView: UIViewControllerRepresentable {
         return picker
     }
 
-    func updateUIViewController(_ uiViewController: UIImagePickerController, context: Context) {}
+    func updateUIViewController(
+        _ uiViewController: UIImagePickerController,
+        context: Context
+    ) {}
 
-    class Coordinator: NSObject, UINavigationControllerDelegate, UIImagePickerControllerDelegate {
+    class Coordinator: NSObject, UINavigationControllerDelegate,
+                       UIImagePickerControllerDelegate {
         let parent: CameraPickerView
 
         init(_ parent: CameraPickerView) {
             self.parent = parent
         }
 
-        func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
+        func imagePickerController(
+            _ picker: UIImagePickerController,
+            didFinishPickingMediaWithInfo info: [UIImagePickerController
+                .InfoKey: Any]
+        ) {
             if let image = info[.originalImage] as? UIImage {
                 parent.selectedImage = image
             }
