@@ -10,14 +10,14 @@ import Foundation
 struct User: Codable, Identifiable {
     let id: Int
     let nickname: String
-    let avatorURL: URL?
+    let avatarURL: URL?
     let createdAt: Date
     let updatedAt: Date
 
     enum CodingKeys: String, CodingKey {
         case id
         case nickname
-        case avatorURL = "avatorUrl"
+        case avatarURL = "avatorUrl"
         case createdAt
         case updatedAt
     }
