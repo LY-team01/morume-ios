@@ -51,15 +51,13 @@ extension EnvironmentValues {
 // プレビュー用
 struct Toast_Previews: PreviewProvider {
     static var previews: some View {
-        VStack {
-            Spacer()
+        ZStack(alignment: .top) {
+            Color(UIColor.systemBackground)
+                .edgesIgnoringSafeArea(.all)
+
             Toast(iconName: "checkmark_circle_icon", message: "フィルターを作成しました")
-                .padding(.bottom, 60)
-            Spacer()
-                .frame(height: 100)
+                .padding(.top, 60) // 通知バーの下ぐらいの位置に
         }
-        .background(Color(UIColor.systemBackground))
-        .edgesIgnoringSafeArea(.all)
-        .previewDevice("iPhone 16 Pro") 
+        .previewDevice("iPhone 16 Pro")
     }
-} 
+}
