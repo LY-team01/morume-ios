@@ -14,11 +14,11 @@ struct Toast: View {
         HStack(spacing: 8) {
             Image(iconName)
                 .renderingMode(.template)
-                .foregroundColor(Color(UIColor.white))
+                .foregroundStyle(.white)
                 .frame(width: 20, height: 20)
             Text(message)
                 .font(.system(size: 18, weight: .medium))
-                .foregroundColor(Color(UIColor.white))
+                .foregroundStyle(.white)
             Spacer()
         }
         .padding(.vertical, 22)
