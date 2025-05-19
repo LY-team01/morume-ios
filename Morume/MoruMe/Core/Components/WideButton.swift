@@ -1,14 +1,14 @@
 import SwiftUI
 
-public struct WideButton: View {
+struct WideButton: View {
     let title: String
     let action: () -> Void
     @Environment(\.isEnabled) private var isEnabled
-    public init(title: String, action: @escaping () -> Void) {
+    init(title: String, action: @escaping () -> Void) {
         self.title = title
         self.action = action
     }
-    public var body: some View {
+    var body: some View {
         Button(action: action) {
             Text(title)
                 .font(.system(size: 17, weight: .medium))
