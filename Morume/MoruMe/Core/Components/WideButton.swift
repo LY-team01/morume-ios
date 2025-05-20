@@ -12,12 +12,11 @@ struct WideButton: View {
         Button(action: action) {
             Text(title)
                 .font(.system(size: 17, weight: .medium))
-                .foregroundColor(isEnabled ? .white : Color(.systemGray3))
-                .frame(minHeight: 50)
+                .foregroundStyle(isEnabled ? .white : Color(.systemGray3))
+                .frame(width: UIScreen.main.bounds.width * 0.8, height: 50)
+                .background(isEnabled ? Color.morumeGreen : Color(.systemGray5))
+                .cornerRadius(30)
         }
-        .frame(width: UIScreen.main.bounds.width * 0.8)
-        .background(isEnabled ? Color.morumeGreen : Color(.systemGray5))
-        .cornerRadius(30)
     }
 }
 
