@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SaveButton: View {
-    var action: () -> Void
+    let action: () -> Void
     init(action: @escaping () -> Void) {
         self.action = action
     }
