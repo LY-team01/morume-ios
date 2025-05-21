@@ -26,7 +26,7 @@ struct FilterSlider: View {
             HStack {
                 Text(label)
                     .foregroundColor(Color.morumePink)
-                    .font(.system(size: 18))      
+                    .font(.system(size: 18))
                 Spacer()
                 Text("\(Int(value))%")
                     .foregroundColor(Color.morumePink)
@@ -61,7 +61,7 @@ struct FilterSlider: View {
         }
         .frame(width: sliderWidth)
         .padding(.vertical, 8)
-    }   
+    }
     private func updateValue(with gesture: DragGesture.Value) {
         let dragLocation = gesture.location.x
         let cappedValue = min(max(dragLocation, 0), sliderWidth - 28)
@@ -72,23 +72,8 @@ struct FilterSlider: View {
 
 #Preview {
     VStack{
-        Group {
-            Text("デフォルト値（50%）を使用")
-                .font(.headline)
-            
-            FilterSlider(label: "美肌")
-            FilterSlider(label: "目")
-            FilterSlider(label: "鼻")
-        }
-        
-        Group {
-            Text("注入された値を使用")
-                .font(.headline)
-            
-            FilterSlider(label: "美肌", value: .constant(20))
+            FilterSlider(label: "口")
             FilterSlider(label: "目", value: .constant(70))
             FilterSlider(label: "鼻", value: .constant(30))
-        }
     }
-    .padding()
 }
