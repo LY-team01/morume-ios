@@ -2,27 +2,15 @@
 //  ShareButton.swift
 //  MoruMe
 //
-//  Created by Taisuke Numao on 2025/05/20.
+//  Created by Taisuke Numao on 2025/05/21.
 //
 
 import SwiftUI
-import UniformTypeIdentifiers
-
-// UIImageをTransferableプロトコルに準拠させる拡張
-extension UIImage: Transferable {
-    public static var transferRepresentation: some TransferRepresentation {
-        DataRepresentation(contentType: .png) { image in
-            image.pngData() ?? Data()
-        } importing: { data in
-            UIImage(data: data) ?? UIImage()
-        }
-    }
-}
 
 struct ShareButton: View {
     let image: UIImage
     var body: some View {
-        ShareLink(item: image, preview: SharePreview("morumeの写真をシェア", image: Image(uiImage: image))) {
+        ShareLink(item: Image(uiImage: image), preview: SharePreview("morumeの写真をシェア", image: Image(uiImage: image))) {
             HStack(spacing: 8) {
                 Image("share_icon")
                     .renderingMode(.template)
@@ -45,5 +33,5 @@ struct ShareButton: View {
 }
 
 #Preview {
-    ShareButton(image: UIImage(systemName: "photo") ?? UIImage())
+    ShareButton(image: UIImage(systemName: "photo")!)
 }
