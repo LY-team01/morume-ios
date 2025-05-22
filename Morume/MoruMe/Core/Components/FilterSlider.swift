@@ -33,6 +33,7 @@ struct FilterSlider: View {
                     .font(.system(size: 18))
             }
             Slider(value: $value, in: 0...100, step: 1)
+                .sensoryFeedback(.selection, trigger: value)
         }
     }
 }
