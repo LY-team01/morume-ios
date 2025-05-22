@@ -32,7 +32,7 @@ struct FilterSlider: View {
                     .foregroundColor(Color.morumePink)
                     .font(.system(size: 18))
             }
-            Slider(value: $value, in: 0...100)
+            Slider(value: $value, in: 0...100, step: 1)
         }
     }
 }
