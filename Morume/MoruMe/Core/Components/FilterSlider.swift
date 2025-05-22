@@ -22,7 +22,7 @@ struct FilterSlider: View {
     }
     let sliderWidth = UIScreen.main.bounds.width * 0.75
     var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
+        VStack(spacing: 0) {
             HStack {
                 Text(label)
                     .foregroundColor(Color.morumePink)
@@ -33,10 +33,7 @@ struct FilterSlider: View {
                     .font(.system(size: 18))
             }
             Slider(value: $value, in: 0...100)
-                .padding()
         }
-        .frame(width: sliderWidth)
-        .padding(.vertical, 8)
     }
 }
 
@@ -55,11 +52,12 @@ struct SliderThumb: View {
     @Previewable @State var eyes: Double = 50
     @Previewable @State var nose: Double = 50
 
-    VStack {
+    VStack(spacing: 16) {
         FilterSlider(label: "口", value: $mouth)
         FilterSlider(label: "目", value: $eyes)
         FilterSlider(label: "鼻", value: $nose)
     }
+    .padding()
 }
 
 #Preview("SliderThumb") {
