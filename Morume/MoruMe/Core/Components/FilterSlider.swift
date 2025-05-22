@@ -2,7 +2,7 @@
 //  FilterSlider.swift
 //  MoruMe
 //
-//  Created by Taisuke Numao on 2025/05/21.
+//  Created by Taisuke Numao on 2025/05/22.
 //
 
 import SwiftUI
@@ -20,7 +20,7 @@ struct FilterSlider: View {
         self.label = label
         self._value = value
     }
-    private let sliderWidth = UIScreen.main.bounds.width * 0.75
+    let sliderWidth = UIScreen.main.bounds.width * 0.75
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack {
@@ -35,10 +35,10 @@ struct FilterSlider: View {
             ZStack(alignment: .leading) {
                 HStack(spacing: 0) {
                     Rectangle()
-                        .fill(Color("MoruMePink"))
+                        .fill(Color.morumePink)
                         .frame(width: (sliderWidth - 28) * value / 100 + 14, height: 4)
                     Rectangle()
-                        .fill(Color("MoruMeBlue"))
+                        .fill(Color.morumeBlue)
                         .frame(width: sliderWidth - ((sliderWidth - 28) * value / 100 + 14), height: 4)
                 }
                 .cornerRadius(5)
@@ -47,7 +47,7 @@ struct FilterSlider: View {
                     .frame(width: 28, height: 28)
                     .overlay(
                         Circle()
-                            .stroke(Color("MoruMePink"), lineWidth: 2)
+                            .stroke(Color.morumePink, lineWidth: 2)
                     )
                     .shadow(color: Color.black.opacity(0.15), radius: 4, x: 0, y: 2)
                     .offset(x: (sliderWidth - 28) * value / 100)
@@ -71,9 +71,9 @@ struct FilterSlider: View {
 }
 
 #Preview {
-    VStack{
-            FilterSlider(label: "口")
-            FilterSlider(label: "目", value: .constant(70))
-            FilterSlider(label: "鼻", value: .constant(30))
+    VStack {
+        FilterSlider(label: "口")
+        FilterSlider(label: "目", value: .constant(70))
+        FilterSlider(label: "鼻", value: .constant(30))
     }
 }
