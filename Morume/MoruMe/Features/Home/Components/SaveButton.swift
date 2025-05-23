@@ -16,9 +16,11 @@ struct SaveButton: View {
         Button(action: action) {
             HStack(spacing: 8) {
                 Image("photo_saved_icon")
+                    .renderingMode(.template)
                     .resizable()
                     .scaledToFit()
                     .frame(height: 20)
+                    .foregroundStyle(.white)
                 Text("保存する")
                     .font(.system(size: 17, weight: .medium))
                     .foregroundStyle(.white)
