@@ -1,6 +1,15 @@
 {
-  "originHash" : "1fa961aa1dc717cea452f3389668f0f99a254f07e4eb11d190768a53798f744f",
+  "originHash" : "6fbd1365761452aa046b79871ed87afb97194c87534e56d835035b7c2ae86e3a",
   "pins" : [
+    {
+      "identity" : "dynamiccolor",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/yannickl/DynamicColor",
+      "state" : {
+        "revision" : "d9beca13ca85baa50ee29832d0db5129fba69630",
+        "version" : "5.0.1"
+      }
+    },
     {
       "identity" : "swiftlintplugins",
       "kind" : "remoteSourceControl",
