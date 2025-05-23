@@ -10,23 +10,25 @@ import SwiftUI
 struct SelectImageComponent: View {
     @Binding var selectedImage: UIImage?
     var body: some View {
-        VStack(spacing: 8) {
-            Image(.photoLibraryIcon)
-                .resizable()
-                .renderingMode(.template)
-                .foregroundStyle(.moruMePink)
-                .scaledToFit()
-                .frame(maxWidth: .infinity)
-            Text("写真ライブラリから選択")
-                .foregroundStyle(Color.moruMePink)
+        Button(action: {
+//            LibraryPickerView(selectedImage: $selectedImage)
+            print("This is Library.") // debug
+        }) {
+            VStack(spacing: 8) {
+                Image(.photoLibraryIcon)
+                    .resizable()
+                    .renderingMode(.template)
+                    .foregroundStyle(.moruMePink)
+                    .scaledToFit()
+                    .frame(maxWidth: .infinity)
+                Text("写真ライブラリから選択")
+                    .foregroundStyle(Color.moruMePink)
+                    .font(.system(size:21))
+            }
         }
         .padding()
         .background(Color(UIColor.systemGray6))
         .cornerRadius(20)
-        .onTapGesture {
-            LibraryPickerView(selectedImage: $selectedImage)
-//            print("This is Library.") // debug
-        }
     }
 }
 
@@ -37,6 +39,7 @@ struct ImageUploadComponent: View {
         VStack {
             Text(mainMessage)
                 .foregroundColor(.moruMePink)
+                .font(.system(size: 21))
             if let viewImage = selectedImage {
                 Image(uiImage: viewImage)
             }else {
@@ -44,13 +47,18 @@ struct ImageUploadComponent: View {
             }
             Text("or")
                 .foregroundColor(.moruMePink)
-            Button("写真を撮る"){
-//                CameraPickerView(selectedImage: $selectedImage)
+                .font(.system(size: 21))
+            Button(action: {
+                //                CameraPickerView(selectedImage: $selectedImage)
                 print("OK!") // debug
+            })
+            {
+                Text("写真を撮る")
+                    .font(.system(size: 21))
+                    .frame(maxWidth: .infinity)
             }
                 .foregroundColor(.white)
                 .padding()
-                .frame(maxWidth: .infinity)
                 .background(Color.moruMePink)
                 .cornerRadius(8)
         }
