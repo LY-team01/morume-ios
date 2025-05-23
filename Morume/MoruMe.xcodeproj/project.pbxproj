@@ -6,10 +6,6 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		C138FA432DE03AEE00AE74F5 /* DynamicColor in Frameworks */ = {isa = PBXBuildFile; productRef = C138FA422DE03AEE00AE74F5 /* DynamicColor */; };
-/* End PBXBuildFile section */
-
 /* Begin PBXFileReference section */
 		17A95E502DD58E750096EDDE /* MoruMe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MoruMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -27,7 +23,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C138FA432DE03AEE00AE74F5 /* DynamicColor in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -71,7 +66,6 @@
 			);
 			name = MoruMe;
 			packageProductDependencies = (
-				C138FA422DE03AEE00AE74F5 /* DynamicColor */,
 			);
 			productName = Morume;
 			productReference = 17A95E502DD58E750096EDDE /* MoruMe.app */;
@@ -103,7 +97,6 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				17D545682DD8D84E0044C45E /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */,
-				C138FA412DE03AEE00AE74F5 /* XCRemoteSwiftPackageReference "DynamicColor" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 17A95E512DD58E750096EDDE /* Products */;
@@ -354,14 +347,6 @@
 				minimumVersion = 0.59.1;
 			};
 		};
-		C138FA412DE03AEE00AE74F5 /* XCRemoteSwiftPackageReference "DynamicColor" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/yannickl/DynamicColor";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.0.1;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -369,11 +354,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 17D545682DD8D84E0044C45E /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */;
 			productName = "plugin:SwiftLintBuildToolPlugin";
-		};
-		C138FA422DE03AEE00AE74F5 /* DynamicColor */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C138FA412DE03AEE00AE74F5 /* XCRemoteSwiftPackageReference "DynamicColor" */;
-			productName = DynamicColor;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
