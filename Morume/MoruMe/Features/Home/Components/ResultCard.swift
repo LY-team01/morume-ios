@@ -15,19 +15,18 @@ struct ResultCard: View {
             VStack(spacing: 0) {
                 ImageDisplayView(image: image, maxWidth: geometry.size.width * 0.9)
                 VStack(spacing: 16) {
-                    // 保存・共有ボタン
                     HStack(spacing: 16) {
                         SaveButton(action: onSave)
                         ShareButton(image: image)
                     }
-                    VStack(spacing: 4) {
+                    VStack(spacing: 0) {
                         Text("みんなそれぞれのフィルターで最高に可愛く！")
                             .font(.system(size: 15, weight: .medium))
-                            .foregroundColor(Color.morumePink)
+                            .foregroundStyle(Color.morumePink)
                         HStack(spacing: 0) {
                             Text("morumeで思い出をもっと素敵に")
                                 .font(.system(size: 15, weight: .medium))
-                                .foregroundColor(Color.morumePink)
+                                .foregroundStyle(Color.morumePink)
                         }
                     }
                 }
@@ -37,7 +36,7 @@ struct ResultCard: View {
             .frame(width: geometry.size.width * 0.9)
             .background(Color.white)
             .cornerRadius(16)
-            .shadow(color: Color.black.opacity(0.1), radius: 12, x: 0, y: 4)
+            .shadow(color: Color.black.opacity(0.2), radius: 12, x: 0, y: 4)
             .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
         }
     }
@@ -50,14 +49,13 @@ struct ImageDisplayView: View {
         Image(uiImage: image)
             .resizable()
             .aspectRatio(contentMode: .fill)
-            .frame(width: maxWidth - 32, height: (maxWidth - 32) * 0.7) // 横長の比率
+            .frame(width: maxWidth - 24, height: (maxWidth - 24) * 0.7) // 横長の比率
             .clipShape(RoundedRectangle(cornerRadius: 12))
             .padding(.horizontal, 16)
             .padding(.top, 16)
     }
 }
 
-// UIActivityViewControllerをSwiftUIで使用するためのラッパー
 struct ShareSheet: UIViewControllerRepresentable {
     let items: [Any]
     func makeUIViewController(context: Context) -> UIActivityViewController {
