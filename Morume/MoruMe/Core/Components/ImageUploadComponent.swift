@@ -9,11 +9,11 @@ import SwiftUI
 
 struct SelectImageComponent: View {
     @Binding var selectedImage: UIImage?
+    @Binding var showLibraryPicker: Bool
     var body: some View {
-        Button(action: {
-//            LibraryPickerView(selectedImage: $selectedImage)
-            print("This is Library.") // debug
-        }) {
+        Button {
+            showLibraryPicker = true
+        } label: {
             VStack(spacing: 8) {
                 Image(.photoLibraryIcon)
                     .resizable()
@@ -22,8 +22,8 @@ struct SelectImageComponent: View {
                     .scaledToFit()
                     .frame(maxWidth: .infinity)
                 Text("写真ライブラリから選択")
+                    .font(.system(size: 21))
                     .foregroundStyle(Color.moruMePink)
-                    .font(.system(size:21))
             }
         }
         .padding()
@@ -33,28 +33,30 @@ struct SelectImageComponent: View {
 }
 
 struct ImageUploadComponent: View {
-    let mainMessage: String = "写真をアップロードしてください"
     @Binding var selectedImage: UIImage?
+    var mainMessage: String = "写真をアップロードしてください"
+    var optionalSubMessage: String? = nil
+    @State private var showCameraPicker = false
+    @State var showLibraryPicker = false
     var body: some View {
         VStack {
             Text(mainMessage)
                 .foregroundColor(.moruMePink)
                 .font(.system(size: 21))
-            if let viewImage = selectedImage {
-                Image(uiImage: viewImage)
-            }else {
-                SelectImageComponent(selectedImage: $selectedImage)
+            if let subMessage = optionalSubMessage {
+                Text(subMessage)
+                    .font(.system(size: 14))
+                    .foregroundColor(.moruMePink)
             }
+            SelectImageComponent(selectedImage: $selectedImage, showLibraryPicker: $showLibraryPicker)
             Text("or")
                 .foregroundColor(.moruMePink)
-                .font(.system(size: 21))
-            Button(action: {
-                //                CameraPickerView(selectedImage: $selectedImage)
-                print("OK!") // debug
-            })
-            {
+                .font(.system(size: 24))
+            Button {
+                showCameraPicker = true
+            } label: {
                 Text("写真を撮る")
-                    .font(.system(size: 21))
+                    .font(.system(size: 17))
                     .frame(maxWidth: .infinity)
             }
                 .foregroundColor(.white)
@@ -66,6 +68,12 @@ struct ImageUploadComponent: View {
             .background(Color.white)
             .cornerRadius(30)
             .shadow(radius: 10)
+            .fullScreenCover(isPresented: $showCameraPicker) {
+                CameraPickerView(selectedImage: $selectedImage)
+            }
+            .fullScreenCover(isPresented: $showLibraryPicker) {
+                LibraryPickerView(selectedImage: $selectedImage)
+            }
     }
 }
 
