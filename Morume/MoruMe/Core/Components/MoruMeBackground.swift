@@ -6,17 +6,16 @@
 //
 
 import SwiftUI
-import DynamicColor
 
 struct MoruMeBackground: View {
     var body: some View {
         LinearGradient(
             gradient: Gradient(colors: [
-                Color(hex: 0xD9FFFF), // 左上の色 (整数値で指定)
-                Color(hex: 0xFFE2EB)  // 右下の色 (整数値で指定)
+                Color("GradientStartColor"),
+                Color("GradientEndColor")
             ]),
             startPoint: .topLeading,
-            endPoint: .bottomTrailing
+        endPoint: .bottomTrailing
         )
         .edgesIgnoringSafeArea(.all)
     }
