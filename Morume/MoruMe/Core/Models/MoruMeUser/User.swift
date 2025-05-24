@@ -8,17 +8,17 @@
 import Foundation
 
 struct User: Codable, Identifiable {
-    let id: Int
+    let id: String
     let nickname: String
     let avatarURL: URL?
-    let filter: Filter?
+    let filter: FilterParameters?
     let createdAt: Date
     let updatedAt: Date
 
     enum CodingKeys: String, CodingKey {
         case id
         case nickname
-        case avatarURL = "avatorUrl"
+        case avatarURL = "avatarUrl"
         case filter
         case createdAt
         case updatedAt
