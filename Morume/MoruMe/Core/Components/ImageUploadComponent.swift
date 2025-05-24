@@ -23,7 +23,7 @@ struct SelectImageComponent: View {
                     .scaledToFit()
                     .frame(maxWidth: .infinity)
                 Text("写真ライブラリから選択")
-                    .font(.system(size: 21))
+                    .font(.system(size: 18))
                     .foregroundStyle(Color.moruMePink)
             }
         }
@@ -68,11 +68,11 @@ struct ImageUploadComponent: View {
                 .foregroundColor(.white)
                 .padding()
                 .background(Color.moruMePink)
-                .cornerRadius(8)
+                .cornerRadius(12)
         }
             .padding()
             .background(Color.white)
-            .cornerRadius(30)
+            .cornerRadius(27)
             .shadow(radius: 10)
             .fullScreenCover(isPresented: $showCameraPicker) {
                 CameraPickerView(selectedImage: $selectedImage)
