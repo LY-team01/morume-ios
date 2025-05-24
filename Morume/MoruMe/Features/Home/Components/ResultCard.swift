@@ -26,11 +26,9 @@ struct ResultCard: View {
                     Text("みんなそれぞれのフィルターで最高に可愛く！")
                         .font(.system(size: 15, weight: .medium))
                         .foregroundStyle(Color.morumePink)
-                    HStack(spacing: 0) {
-                        Text("morumeで思い出をもっと素敵に")
-                            .font(.system(size: 15, weight: .medium))
-                            .foregroundStyle(Color.morumePink)
-                    }
+                    Text("morumeで思い出をもっと素敵に")
+                        .font(.system(size: 15, weight: .medium))
+                        .foregroundStyle(Color.morumePink)
                 }
             }
             .padding(.horizontal, 24)
@@ -45,10 +43,13 @@ struct ResultCard: View {
 
 struct ImageDisplayView: View {
     let image: UIImage
+    private var imageAreaWidth: CGFloat {
+        UIScreen.main.bounds.width * 0.9 - 32
+    }
+    private var imageMaxHeight: CGFloat {
+        imageAreaWidth * 0.75
+    }
     var body: some View {
-        let imageAreaWidth = UIScreen.main.bounds.width * 0.9 - 32
-        let imageMaxHeight = imageAreaWidth * 0.75
-
         Image(uiImage: image)
             .resizable()
             .scaledToFit()
