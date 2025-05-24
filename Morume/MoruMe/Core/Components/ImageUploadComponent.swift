@@ -35,9 +35,9 @@ struct SelectImageComponent: View {
 
 struct ImageUploadComponent: View {
     @Binding var selectedImage: UIImage?
-    var mainMessage: String = "写真をアップロードしてください"
-    var optionalSubMessage: String? = nil
-    var iconAsset: UIImage = .photoLibraryIcon
+    let mainMessage: String
+    let optionalSubMessage: String?
+    let iconAsset: UIImage
     @State private var showCameraPicker = false
     @State var showLibraryPicker = false
     var body: some View {
@@ -85,6 +85,9 @@ struct ImageUploadComponent: View {
 
 #Preview {
     ImageUploadComponent(
-        selectedImage: .constant(nil)
+        selectedImage: .constant(nil),
+        mainMessage: "写真をアップロードしてください",
+        optionalSubMessage: nil,
+        iconAsset: .photoLibraryIcon
     )
 }
