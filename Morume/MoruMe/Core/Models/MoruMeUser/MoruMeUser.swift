@@ -11,6 +11,7 @@ struct MoruMeUser: Codable, Identifiable {
     let id: Int
     let nickname: String
     let avatarURL: URL?
+    let filter: Filter?
     let createdAt: Date
     let updatedAt: Date
 
@@ -18,6 +19,7 @@ struct MoruMeUser: Codable, Identifiable {
         case id
         case nickname
         case avatarURL = "avatorUrl"
+        case filter
         case createdAt
         case updatedAt
     }
