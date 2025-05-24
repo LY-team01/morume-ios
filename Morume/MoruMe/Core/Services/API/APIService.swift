@@ -43,3 +43,50 @@ protocol APIService {
         body: Data?
     ) async throws
 }
+
+extension APIService {
+    /// GET リクエストの簡易メソッド
+    func get<T: Codable>(endpoint: String) async throws -> T {
+        return try await request(endpoint: endpoint, method: .get, body: nil)
+    }
+
+    /// POST リクエストの簡易メソッド
+    func post<T: Codable>(endpoint: String, body: Data? = nil) async throws -> T {
+        return try await request(endpoint: endpoint, method: .post, body: body)
+    }
+
+    /// PUT リクエストの簡易メソッド
+    func put<T: Codable>(endpoint: String, body: Data? = nil) async throws -> T {
+        return try await request(endpoint: endpoint, method: .put, body: body)
+    }
+
+    /// DELETE リクエストの簡易メソッド
+    func delete(endpoint: String) async throws {
+        try await request(endpoint: endpoint, method: .delete, body: nil)
+    }
+
+    /// PATCH リクエストの簡易メソッド
+    func patch<T: Codable>(endpoint: String, body: Data? = nil) async throws -> T {
+        return try await request(endpoint: endpoint, method: .patch, body: body)
+    }
+}
+
+extension APIService {
+    /// エンコード可能なオブジェクトを使った POST リクエスト
+    func post<T: Codable, U: Encodable>(endpoint: String, body: U) async throws -> T {
+        let data = try JSONEncoder().encode(body)
+        return try await post(endpoint: endpoint, body: data)
+    }
+
+    /// エンコード可能なオブジェクトを使った PUT リクエスト
+    func put<T: Codable, U: Encodable>(endpoint: String, body: U) async throws -> T {
+        let data = try JSONEncoder().encode(body)
+        return try await put(endpoint: endpoint, body: data)
+    }
+
+    /// エンコード可能なオブジェクトを使った PATCH リクエスト
+    func patch<T: Codable, U: Encodable>(endpoint: String, body: U) async throws -> T {
+        let data = try JSONEncoder().encode(body)
+        return try await patch(endpoint: endpoint, body: data)
+    }
+}
