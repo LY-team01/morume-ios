@@ -6,10 +6,8 @@
 //
 
 protocol FilterRepository {
-    /// フィルターを登録
-    func putFilter(filter: Filter) async throws -> Filter
     /// 自分のフィルターを取得
     func fetchMyFilter() async throws -> Filter
     /// フィルターを取得
-    func fetchFilter(userID: Int) async throws -> Filter
+    func fetchFilter(userID: String) async throws -> Filter
 }
