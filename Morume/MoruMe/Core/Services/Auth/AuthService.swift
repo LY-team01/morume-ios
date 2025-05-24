@@ -16,10 +16,9 @@ final class FirebaseAuthService: AuthService {
     private let auth = Auth.auth()
 
     func login() async throws {
-        guard auth.currentUser != nil else {
-            return
+        if auth.currentUser == nil {
+            try await auth.signInAnonymously()
         }
-        try await auth.signInAnonymously()
     }
 
     func getToken() async throws -> String {
