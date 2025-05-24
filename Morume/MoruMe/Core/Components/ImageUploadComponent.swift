@@ -39,7 +39,7 @@ struct ImageUploadComponent: View {
     let optionalSubMessage: String?
     let iconAsset: UIImage
     @State private var showCameraPicker = false
-    @State var showLibraryPicker = false
+    @State private var showLibraryPicker = false
     var body: some View {
         VStack {
             Text(mainMessage)
