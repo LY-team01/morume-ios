@@ -16,6 +16,9 @@ final class FirebaseAuthService: AuthService {
     private let auth = Auth.auth()
 
     func login() async throws {
+        guard auth.currentUser != nil else {
+            return
+        }
         try await auth.signInAnonymously()
     }
 
@@ -23,6 +26,6 @@ final class FirebaseAuthService: AuthService {
         guard let user = auth.currentUser else {
             throw NSError(domain: "User not authenticated", code: 401, userInfo: nil)
         }
-        return try await user.getIDToken()
+        return try await user.getIDToken(forcingRefresh: true)
     }
 }
