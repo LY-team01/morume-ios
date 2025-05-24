@@ -34,8 +34,19 @@ final class MoruMeAPIService: APIService {
 
         do {
             let decoder = JSONDecoder()
-            decoder.keyDecodingStrategy = .convertFromSnakeCase
-            decoder.dateDecodingStrategy = .iso8601
+            decoder.dateDecodingStrategy = .custom { decoder in
+                let container = try decoder.singleValueContainer()
+                let dateStr = try container.decode(String.self)
+                let formatter = ISO8601DateFormatter()
+                formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+                guard let date = formatter.date(from: dateStr) else {
+                    throw DecodingError.dataCorruptedError(
+                        in: container,
+                        debugDescription: "Invalid date format: \(dateStr)"
+                    )
+                }
+                return date
+            }
 
             let result = try decoder.decode(T.self, from: data)
             logger.debug("📥 デコード成功: \(String(describing: T.self))")
