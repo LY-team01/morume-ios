@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		176C8E472DE1D91C00DADCAB /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 176C8E462DE1D91C00DADCAB /* FirebaseAuth */; };
+		176C8E492DE1D91C00DADCAB /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 176C8E482DE1D91C00DADCAB /* FirebaseCore */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		17A95E502DD58E750096EDDE /* MoruMe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MoruMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +28,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				176C8E492DE1D91C00DADCAB /* FirebaseCore in Frameworks */,
+				176C8E472DE1D91C00DADCAB /* FirebaseAuth in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -66,6 +73,8 @@
 			);
 			name = MoruMe;
 			packageProductDependencies = (
+				176C8E462DE1D91C00DADCAB /* FirebaseAuth */,
+				176C8E482DE1D91C00DADCAB /* FirebaseCore */,
 			);
 			productName = Morume;
 			productReference = 17A95E502DD58E750096EDDE /* MoruMe.app */;
@@ -97,6 +106,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				17D545682DD8D84E0044C45E /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */,
+				176C8E452DE1D91C00DADCAB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 17A95E512DD58E750096EDDE /* Products */;
@@ -277,6 +287,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = "-Objc";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lyteam01.MoruMe;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -307,6 +318,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = "-Objc";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lyteam01.MoruMe;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -339,6 +351,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		176C8E452DE1D91C00DADCAB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.13.0;
+			};
+		};
 		17D545682DD8D84E0044C45E /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SimplyDanny/SwiftLintPlugins";
@@ -350,6 +370,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		176C8E462DE1D91C00DADCAB /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 176C8E452DE1D91C00DADCAB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		176C8E482DE1D91C00DADCAB /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 176C8E452DE1D91C00DADCAB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
 		17D545692DD8D8B70044C45E /* SwiftLintBuildToolPlugin */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 17D545682DD8D84E0044C45E /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */;
