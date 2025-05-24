@@ -9,5 +9,5 @@ protocol FilterRepository {
     /// 自分のフィルターを取得
     func fetchMyFilter() async throws -> Filter
     /// フィルターを取得
-    func fetchFilter(userID: Int) async throws -> Filter
+    func fetchFilter(userID: String) async throws -> Filter
 }
