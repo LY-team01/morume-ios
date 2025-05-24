@@ -10,23 +10,24 @@ import SwiftUI
 struct SelectImageComponent: View {
     @Binding var selectedImage: UIImage?
     @Binding var showLibraryPicker: Bool
-    let iconAsset: UIImage
+    let iconAsset: ImageResource
     var body: some View {
         Button {
             showLibraryPicker = true
         } label: {
             VStack(spacing: 8) {
-                Image(uiImage: iconAsset)
+                Image(iconAsset)
                     .resizable()
                     .renderingMode(.template)
                     .foregroundStyle(.moruMePink)
-                    .scaledToFit()
-                    .frame(maxWidth: .infinity)
+                    .frame(width: 128, height: 128)
                 Text("写真ライブラリから選択")
                     .font(.system(size: 18))
                     .foregroundStyle(Color.moruMePink)
+                    .frame(width: .infinity,height: 52)
             }
         }
+        .frame(width: 363,height: 284)
         .padding()
         .background(Color(UIColor.systemGray6))
         .cornerRadius(20)
@@ -37,7 +38,7 @@ struct ImageUploadComponent: View {
     @Binding var selectedImage: UIImage?
     let mainMessage: String
     let optionalSubMessage: String?
-    let iconAsset: UIImage
+    let iconAsset: ImageResource
     @State private var showCameraPicker = false
     @State private var showLibraryPicker = false
     var body: some View {
