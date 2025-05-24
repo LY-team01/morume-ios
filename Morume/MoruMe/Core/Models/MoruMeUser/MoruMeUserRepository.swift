@@ -9,7 +9,7 @@ import Foundation
 
 protocol MoruMeUserRepository {
     /// ユーザーを登録
-    func addUser(nickname: String, avatarURL: URL?) async throws -> MoruMeUser
+    func addUser(nickname: String, avatarURL: URL?, filter: Filter) async throws -> MoruMeUser
     /// 自分のユーザー情報を取得
     func fetchMyUser() async throws -> MoruMeUser
     /// 全ユーザー情報を取得
