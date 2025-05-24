@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class MoruMeAPIUserRepository: MoruMeUserRepository {
+final class MoruMeAPIUserRepository: UserRepository {
     private let apiService: APIService
 
     init() {
@@ -16,16 +16,16 @@ final class MoruMeAPIUserRepository: MoruMeUserRepository {
     }
 
     @discardableResult
-    func addUser(nickname: String, avatarURL: URL?, filterParameters: FilterParameters) async throws -> MoruMeUser {
+    func addUser(nickname: String, avatarURL: URL?, filterParameters: FilterParameters) async throws -> User {
         let requestBody = CreateUserRequestBody(nickname: nickname, avatarURL: avatarURL, filter: filterParameters)
         return try await apiService.put(endpoint: "api/users", body: requestBody)
     }
 
-    func fetchMyUser() async throws -> MoruMeUser {
+    func fetchMyUser() async throws -> User {
         try await apiService.get(endpoint: "api/users/me")
     }
 
-    func fetchUsers() async throws -> [MoruMeUser] {
+    func fetchUsers() async throws -> [User] {
         try await apiService.get(endpoint: "api/users/list")
     }
 }
