@@ -1,5 +1,5 @@
 //
-//  User.swift
+//  MoruMeUser.swift
 //  MoruMe
 //
 //  Created by 青原光 on 2025/05/17.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct User: Codable, Identifiable {
+struct MoruMeUser: Codable, Identifiable {
     let id: Int
     let nickname: String
     let avatarURL: URL?
