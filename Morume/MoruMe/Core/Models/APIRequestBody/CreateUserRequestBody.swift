@@ -11,4 +11,10 @@ struct CreateUserRequestBody: Encodable {
     let nickname: String
     let avatarURL: URL?
     let filter: FilterParameters
+
+    enum CodingKeys: String, CodingKey {
+        case nickname
+        case avatarURL = "avatarUrl"
+        case filter
+    }
 }
