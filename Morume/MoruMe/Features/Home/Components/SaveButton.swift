@@ -25,7 +25,8 @@ struct SaveButton: View {
                     .font(.system(size: 17, weight: .medium))
                     .foregroundStyle(.white)
             }
-            .frame(width: UIScreen.main.bounds.width * 0.38, height: 50)
+            .frame(maxWidth: .infinity)
+            .frame(height: 50)
             .background(Color.morumePink)
             .cornerRadius(30)
         }
