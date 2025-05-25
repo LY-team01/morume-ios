@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SelectImageComponent: View {
+private struct SelectImageComponent: View {
     @Binding var selectedImage: UIImage?
     @Binding var showLibraryPicker: Bool
     let iconAsset: ImageResource
