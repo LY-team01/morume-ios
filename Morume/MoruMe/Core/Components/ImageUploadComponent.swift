@@ -37,7 +37,7 @@ private struct SelectImageComponent: View {
 struct ImageUploadComponent: View {
     @Binding var selectedImage: UIImage?
     let mainMessage: String
-    let optionalSubMessage: String?
+    let optionalSubMessage: String? = nil
     let iconAsset: ImageResource
     @State private var showCameraPicker = false
     @State private var showLibraryPicker = false
@@ -90,7 +90,6 @@ struct ImageUploadComponent: View {
     ImageUploadComponent(
         selectedImage: .constant(nil),
         mainMessage: "写真をアップロードしてください",
-        optionalSubMessage: nil,
         iconAsset: .photoLibraryIcon
     )
 }
