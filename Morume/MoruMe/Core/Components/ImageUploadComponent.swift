@@ -24,11 +24,11 @@ struct SelectImageComponent: View {
                 Text("写真ライブラリから選択")
                     .font(.system(size: 18))
                     .foregroundStyle(Color.moruMePink)
-                    .frame(width: .infinity,height: 52)
+                    .frame(maxWidth: .infinity)
             }
         }
-        .frame(width: 363,height: 284)
-        .padding()
+        .padding(.vertical, 52)
+        .padding(.horizontal, 25)
         .background(Color(UIColor.systemGray6))
         .cornerRadius(20)
     }
@@ -71,7 +71,9 @@ struct ImageUploadComponent: View {
                 .background(Color.moruMePink)
                 .cornerRadius(12)
         }
-            .padding()
+            .padding(.top, 34)
+            .padding(.bottom, 23.5)
+            .padding(.horizontal, 20)
             .background(Color.white)
             .cornerRadius(27)
             .shadow(radius: 10)
