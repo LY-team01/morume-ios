@@ -41,9 +41,8 @@ struct ResultCard: View {
     }
 }
 
-struct ImageDisplayView: View {
+private struct ImageDisplayView: View {
     let image: UIImage
-    let imageAreaWidth = UIScreen.main.bounds.width * 0.9 - 32
     let imageMaxHeight = (UIScreen.main.bounds.width * 0.9 - 32) * 0.75
     var body: some View {
         Image(uiImage: image)
