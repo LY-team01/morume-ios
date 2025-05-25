@@ -43,12 +43,8 @@ struct ResultCard: View {
 
 struct ImageDisplayView: View {
     let image: UIImage
-    private var imageAreaWidth: CGFloat {
-        UIScreen.main.bounds.width * 0.9 - 32
-    }
-    private var imageMaxHeight: CGFloat {
-        imageAreaWidth * 0.75
-    }
+    private let imageAreaWidth = UIScreen.main.bounds.width * 0.9 - 32
+    private let imageMaxHeight = (UIScreen.main.bounds.width * 0.9 - 32) * 0.75
     var body: some View {
         Image(uiImage: image)
             .resizable()
