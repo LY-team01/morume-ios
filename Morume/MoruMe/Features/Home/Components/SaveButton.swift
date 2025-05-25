@@ -16,14 +16,17 @@ struct SaveButton: View {
         Button(action: action) {
             HStack(spacing: 8) {
                 Image("photo_saved_icon")
+                    .renderingMode(.template)
                     .resizable()
                     .scaledToFit()
                     .frame(height: 20)
+                    .foregroundStyle(.white)
                 Text("保存する")
                     .font(.system(size: 17, weight: .medium))
                     .foregroundStyle(.white)
             }
-            .frame(width: UIScreen.main.bounds.width * 0.38, height: 50)
+            .frame(maxWidth: .infinity)
+            .frame(height: 50)
             .background(Color.morumePink)
             .cornerRadius(30)
         }

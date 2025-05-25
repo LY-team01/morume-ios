@@ -22,7 +22,8 @@ struct ShareButton: View {
                     .font(.system(size: 17, weight: .medium))
                     .foregroundStyle(Color.morumePink)
             }
-            .frame(width: UIScreen.main.bounds.width * 0.38, height: 50)
+            .frame(maxWidth: .infinity)
+            .frame(height: 50)
             .background(.clear)
             .overlay(
                 RoundedRectangle(cornerRadius: 30)
