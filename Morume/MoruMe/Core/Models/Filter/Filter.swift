@@ -21,11 +21,22 @@ struct Filter: Codable {
     }
 }
 
-struct FilterParameters: Codable {
-    let brightness: Int
-    let skin: Int
-    let contour: Int
-    let eye: Int
-    let nose: Int
-    let mouth: Int
+struct FilterParameters: Codable, Equatable {
+    var brightness: Int = 0
+    var skin: Int = 0
+    var contour: Int = 0
+    var eye: Int = 0
+    var nose: Int = 0
+    var mouth: Int = 0
+
+    func toScale() -> [String: Float] {
+        return [
+            "brightness": 1.0 + 0.001 * Float(brightness),
+            "skin": 1.0 + 0.001 * Float(skin),
+            "contour": 1.0 + 0.001 * Float(contour),
+            "eye": 1.0 + 0.001 * Float(eye),
+            "nose": 1.0 + 0.001 * Float(nose),
+            "mouth": 1.0 + 0.001 * Float(mouth)
+        ]
+    }
 }
