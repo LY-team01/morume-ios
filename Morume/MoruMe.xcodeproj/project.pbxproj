@@ -9,10 +9,15 @@
 /* Begin PBXBuildFile section */
 		176C8E472DE1D91C00DADCAB /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 176C8E462DE1D91C00DADCAB /* FirebaseAuth */; };
 		176C8E492DE1D91C00DADCAB /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 176C8E482DE1D91C00DADCAB /* FirebaseCore */; };
+		1790CBE92DE2F35C00D72EB9 /* DelaunayTriangulation in Frameworks */ = {isa = PBXBuildFile; productRef = 1790CBE82DE2F35C00D72EB9 /* DelaunayTriangulation */; };
+		1C978AD67F8B4902B0693EB1 /* Pods_MoruMe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBAE5E154BE146EFF6C2C156 /* Pods_MoruMe.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		17A95E502DD58E750096EDDE /* MoruMe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MoruMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1DD47B77BB99035E0D36D2D0 /* Pods-MoruMe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MoruMe.release.xcconfig"; path = "Target Support Files/Pods-MoruMe/Pods-MoruMe.release.xcconfig"; sourceTree = "<group>"; };
+		53ECC382A56AE3887025E0D1 /* Pods-MoruMe.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MoruMe.debug.xcconfig"; path = "Target Support Files/Pods-MoruMe/Pods-MoruMe.debug.xcconfig"; sourceTree = "<group>"; };
+		BBAE5E154BE146EFF6C2C156 /* Pods_MoruMe.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MoruMe.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -30,17 +35,29 @@
 			files = (
 				176C8E492DE1D91C00DADCAB /* FirebaseCore in Frameworks */,
 				176C8E472DE1D91C00DADCAB /* FirebaseAuth in Frameworks */,
+				1790CBE92DE2F35C00D72EB9 /* DelaunayTriangulation in Frameworks */,
+				1C978AD67F8B4902B0693EB1 /* Pods_MoruMe.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		16E168CE7A8F2018778CBE90 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				BBAE5E154BE146EFF6C2C156 /* Pods_MoruMe.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		17A95E472DD58E750096EDDE = {
 			isa = PBXGroup;
 			children = (
 				17A95E522DD58E750096EDDE /* MoruMe */,
 				17A95E512DD58E750096EDDE /* Products */,
+				A0DB07B420A6E484B76C5059 /* Pods */,
+				16E168CE7A8F2018778CBE90 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -52,6 +69,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		A0DB07B420A6E484B76C5059 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				53ECC382A56AE3887025E0D1 /* Pods-MoruMe.debug.xcconfig */,
+				1DD47B77BB99035E0D36D2D0 /* Pods-MoruMe.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -59,6 +85,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 17A95E5B2DD58E760096EDDE /* Build configuration list for PBXNativeTarget "MoruMe" */;
 			buildPhases = (
+				327A9E3FEF898A84FD291093 /* [CP] Check Pods Manifest.lock */,
 				17A95E4C2DD58E750096EDDE /* Sources */,
 				17A95E4D2DD58E750096EDDE /* Frameworks */,
 				17A95E4E2DD58E750096EDDE /* Resources */,
@@ -75,6 +102,7 @@
 			packageProductDependencies = (
 				176C8E462DE1D91C00DADCAB /* FirebaseAuth */,
 				176C8E482DE1D91C00DADCAB /* FirebaseCore */,
+				1790CBE82DE2F35C00D72EB9 /* DelaunayTriangulation */,
 			);
 			productName = Morume;
 			productReference = 17A95E502DD58E750096EDDE /* MoruMe.app */;
@@ -107,6 +135,7 @@
 			packageReferences = (
 				17D545682DD8D84E0044C45E /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */,
 				176C8E452DE1D91C00DADCAB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				1790CBE72DE2F35C00D72EB9 /* XCRemoteSwiftPackageReference "DelaunaySwift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 17A95E512DD58E750096EDDE /* Products */;
@@ -127,6 +156,31 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		327A9E3FEF898A84FD291093 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-MoruMe-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		17A95E4C2DD58E750096EDDE /* Sources */ = {
@@ -267,6 +321,7 @@
 		};
 		17A95E5C2DD58E760096EDDE /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 53ECC382A56AE3887025E0D1 /* Pods-MoruMe.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -276,6 +331,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = morume;
+				INFOPLIST_KEY_NSCameraUsageDescription = "このアプリは加工を行う顔写真を取得するためにカメラを使用します。";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -287,8 +343,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MACH_O_TYPE = mh_execute;
 				MARKETING_VERSION = 1.0;
-				OTHER_LDFLAGS = "-Objc";
+				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lyteam01.MoruMe;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -299,6 +356,7 @@
 		};
 		17A95E5D2DD58E760096EDDE /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1DD47B77BB99035E0D36D2D0 /* Pods-MoruMe.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -306,8 +364,10 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
+				EXCLUDED_ARCHS = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = morume;
+				INFOPLIST_KEY_NSCameraUsageDescription = "このアプリは加工を行う顔写真を取得するためにカメラを使用します。";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -319,8 +379,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				MACH_O_TYPE = mh_execute;
 				MARKETING_VERSION = 1.0;
-				OTHER_LDFLAGS = "-Objc";
+				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_BUNDLE_IDENTIFIER = com.lyteam01.MoruMe;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -361,6 +422,14 @@
 				minimumVersion = 11.13.0;
 			};
 		};
+		1790CBE72DE2F35C00D72EB9 /* XCRemoteSwiftPackageReference "DelaunaySwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AlexLittlejohn/DelaunaySwift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 		17D545682DD8D84E0044C45E /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SimplyDanny/SwiftLintPlugins";
@@ -381,6 +450,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 176C8E452DE1D91C00DADCAB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseCore;
+		};
+		1790CBE82DE2F35C00D72EB9 /* DelaunayTriangulation */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1790CBE72DE2F35C00D72EB9 /* XCRemoteSwiftPackageReference "DelaunaySwift" */;
+			productName = DelaunayTriangulation;
 		};
 		17D545692DD8D8B70044C45E /* SwiftLintBuildToolPlugin */ = {
 			isa = XCSwiftPackageProductDependency;

@@ -15,7 +15,7 @@ private struct SelectImageComponent: View {
         Button {
             showLibraryPicker = true
         } label: {
-            VStack(spacing: 8) {
+            VStack(spacing: 20) {
                 Image(iconAsset)
                     .resizable()
                     .renderingMode(.template)
@@ -24,32 +24,48 @@ private struct SelectImageComponent: View {
                 Text("写真ライブラリから選択")
                     .font(.system(size: 18))
                     .foregroundStyle(Color.moruMePink)
-                    .frame(maxWidth: .infinity)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.top, 70)
+            .padding(.bottom, 80)
+            .background {
+                RoundedRectangle(cornerRadius: 20)
+                    .fill(Color(uiColor: .systemGray6))
             }
         }
-        .padding(.vertical, 52)
-        .padding(.horizontal, 25)
-        .background(Color(UIColor.systemGray6))
-        .cornerRadius(20)
     }
 }
 
 struct ImageUploadComponent: View {
     @Binding var selectedImage: UIImage?
-    let mainMessage: String
-    let optionalSubMessage: String? = nil
-    let iconAsset: ImageResource
     @State private var showCameraPicker = false
     @State private var showLibraryPicker = false
+
+    let mainMessage: String
+    let optionalSubMessage: String?
+    let iconAsset: ImageResource
+
+    init(
+        selectedImage: Binding<UIImage?>,
+        mainMessage: String,
+        optionalSubMessage: String? = nil,
+        iconAsset: ImageResource
+    ) {
+        self._selectedImage = selectedImage
+        self.mainMessage = mainMessage
+        self.optionalSubMessage = optionalSubMessage
+        self.iconAsset = iconAsset
+    }
+
     var body: some View {
         VStack {
             Text(mainMessage)
-                .foregroundColor(.moruMePink)
                 .font(.system(size: 21))
+                .foregroundStyle(.moruMePink)
             if let subMessage = optionalSubMessage {
                 Text(subMessage)
-                    .font(.system(size: 14))
-                    .foregroundColor(.moruMePink)
+                    .font(.system(size: 13))
+                    .foregroundStyle(.moruMePink)
             }
             SelectImageComponent(
                 selectedImage: $selectedImage,
@@ -57,32 +73,34 @@ struct ImageUploadComponent: View {
                 iconAsset: iconAsset
             )
             Text("or")
-                .foregroundColor(.moruMePink)
                 .font(.system(size: 24))
+                .foregroundStyle(.moruMePink)
             Button {
                 showCameraPicker = true
             } label: {
                 Text("写真を撮る")
+                    .foregroundStyle(.white)
                     .font(.system(size: 17))
                     .frame(maxWidth: .infinity)
+                    .padding()
+                    .background {
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(.moruMePink)
+                    }
             }
-                .foregroundColor(.white)
-                .padding()
-                .background(Color.moruMePink)
-                .cornerRadius(12)
         }
-            .padding(.top, 34)
-            .padding(.bottom, 23.5)
-            .padding(.horizontal, 20)
-            .background(Color.white)
-            .cornerRadius(27)
-            .shadow(radius: 10)
-            .fullScreenCover(isPresented: $showCameraPicker) {
-                CameraPickerView(selectedImage: $selectedImage)
-            }
-            .fullScreenCover(isPresented: $showLibraryPicker) {
-                LibraryPickerView(selectedImage: $selectedImage)
-            }
+        .padding(20)
+        .background {
+            RoundedRectangle(cornerRadius: 27)
+                .fill(.white)
+                .shadow(color: .black.opacity(0.25), radius: 18, x: 4, y: 4)
+        }
+        .fullScreenCover(isPresented: $showCameraPicker) {
+            CameraPickerView(selectedImage: $selectedImage)
+        }
+        .fullScreenCover(isPresented: $showLibraryPicker) {
+            LibraryPickerView(selectedImage: $selectedImage)
+        }
     }
 }
 

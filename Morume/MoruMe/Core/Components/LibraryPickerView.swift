@@ -22,6 +22,7 @@ struct LibraryPickerView: UIViewControllerRepresentable {
 
         let picker = PHPickerViewController(configuration: config)
         picker.delegate = context.coordinator
+        picker.view.tintColor = .moruMePink
         return picker
     }
 

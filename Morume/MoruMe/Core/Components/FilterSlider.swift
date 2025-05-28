@@ -9,9 +9,9 @@ import SwiftUI
 
 struct FilterSlider: View {
     let label: String
-    @Binding var value: Double
+    @Binding var value: Int
 
-    init(label: String, value: Binding<Double>) {
+    init(label: String, value: Binding<Int>) {
         self.label = label
         self._value = value
         let thumbImage = ImageRenderer(content: SliderThumb())
@@ -28,11 +28,11 @@ struct FilterSlider: View {
                     .foregroundColor(Color.morumePink)
                     .font(.system(size: 18))
                 Spacer()
-                Text("\(Int(value))%")
+                Text("\(Int(value))")
                     .foregroundColor(Color.morumePink)
                     .font(.system(size: 18))
             }
-            Slider(value: $value, in: 0...100, step: 1)
+            Slider(value: .convert($value), in: -100...100, step: 1)
                 .sensoryFeedback(.selection, trigger: value)
         }
     }
@@ -48,10 +48,23 @@ struct SliderThumb: View {
     }
 }
 
+extension Binding {
+    public static func convert<TInt, TFloat>(_ intBinding: Binding<TInt>) -> Binding<TFloat>
+    where
+        TInt: BinaryInteger,
+        TFloat: BinaryFloatingPoint
+    {
+        Binding<TFloat>(
+            get: { TFloat(intBinding.wrappedValue) },
+            set: { intBinding.wrappedValue = TInt($0) }
+        )
+    }
+}
+
 #Preview("FilterSlider") {
-    @Previewable @State var mouth: Double = 50
-    @Previewable @State var eyes: Double = 50
-    @Previewable @State var nose: Double = 50
+    @Previewable @State var mouth = 0
+    @Previewable @State var eyes = 0
+    @Previewable @State var nose = 0
 
     VStack(spacing: 16) {
         FilterSlider(label: "口", value: $mouth)

@@ -22,17 +22,17 @@ enum ToastType {
 }
 
 struct Toast: View {
-    let iconName: String
+    let icon: ImageResource
     let message: String
     let type: ToastType
-    init(iconName: String, message: String, type: ToastType = .success) {
-        self.iconName = iconName
+    init(icon: ImageResource, message: String, type: ToastType) {
+        self.icon = icon
         self.message = message
         self.type = type
     }
     var body: some View {
         HStack(spacing: 8) {
-            Image(iconName)
+            Image(icon)
                 .renderingMode(.template)
                 .foregroundStyle(.white)
                 .frame(width: 20, height: 20)
@@ -52,7 +52,7 @@ struct Toast: View {
 // プレビュー用
 #Preview {
     VStack(spacing: 20) {
-        Toast(iconName: "checkmark_circle_icon", message: "フィルターを作成しました")
-        Toast(iconName: "error_icon", message: "エラーが発生しました", type: .error)
+        Toast(icon: .checkmarkCircleIcon, message: "フィルターを作成しました", type: .success)
+        Toast(icon: .errorIcon, message: "エラーが発生しました", type: .error)
     }
 }
