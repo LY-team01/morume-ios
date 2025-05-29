@@ -22,12 +22,19 @@ struct HomeView: View {
                     Image(.topLogo)
 
                     if let resultPhoto = viewModel.resultPhoto {
-                        ResultCard(image: resultPhoto) {
-                            Task {
-                                await viewModel.saveResultPhoto()
+                        VStack {
+                            ResultCard(image: resultPhoto) {
+                                Task {
+                                    await viewModel.saveResultPhoto()
+                                }
+                            }
+                            .padding(.horizontal, 18)
+                            .padding(.bottom, 60)
+
+                            WideButton(title: "次の写真を加工する") {
+                                viewModel.resetState()
                             }
                         }
-                        .padding(.horizontal, 18)
                     } else {
                         ImageUploadComponent(
                             selectedImage: $viewModel.selectedPhoto,
