@@ -41,16 +41,21 @@ final class PhotoEditViewModel {
         do {
             try await photoEditRepository.detectFaceAndLandmarks()
 
+            // Prepare and sort face data by leftmost X (minX)
+            let regions = photoEditRepository.detectedFaceRegions
+            let meshes = photoEditRepository.detectedFaceMeshes
+            let sortedFaces = zip(regions, meshes)
+                .sorted { $0.0.minX < $1.0.minX }
+
+            // Clear and repopulate detectedFaces with colors in sorted order
             detectedFaces = []
-            for index in 0..<photoEditRepository.detectedFaceMeshes.count {
-                if index >= faceColors.count {
-                    break
-                }
+            for (index, (region, mesh)) in sortedFaces.enumerated() {
+                guard index < faceColors.count else { break }
                 let detectedFace = DetectedFace(
-                    faceRegion: photoEditRepository.detectedFaceRegions[index],
+                    faceRegion: region,
                     color: faceColors[index],
                     user: nil,
-                    faceMesh: photoEditRepository.detectedFaceMeshes[index]
+                    faceMesh: mesh
                 )
                 detectedFaces.append(detectedFace)
             }
