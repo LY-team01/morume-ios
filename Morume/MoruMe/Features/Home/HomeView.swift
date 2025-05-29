@@ -55,7 +55,7 @@ struct HomeView: View {
         )
         .modifier(
             ToastOverlay(
-                showToast: $viewModel.showErrorToast,
+                showToast: $viewModel.showSuccessToast,
                 icon: .checkmarkCircleIcon,
                 message: "フィルターを作成しました",
                 type: .success
