@@ -14,6 +14,10 @@ struct ContentView: View {
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = UIColor(.white)
         appearance.shadowColor = nil  // 上部の枠線（シャドウ）を消す
+        appearance.stackedLayoutAppearance.selected.iconColor = .moruMePink
+        appearance.stackedLayoutAppearance.selected.titleTextAttributes = [
+            .foregroundColor: UIColor.moruMePink
+        ]
         UITabBar.appearance().standardAppearance = appearance
         UITabBar.appearance().scrollEdgeAppearance = appearance
     }
@@ -33,7 +37,6 @@ struct ContentView: View {
                     Text("FILTER")
                 }
         }
-        .tint(.morumePink)
     }
 }
 
