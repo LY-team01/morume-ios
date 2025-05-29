@@ -21,7 +21,7 @@ struct Filter: Codable {
     }
 }
 
-struct FilterParameters: Codable, Equatable {
+struct FilterParameters: Codable, Equatable, Hashable {
     var brightness: Int = 0
     var skin: Int = 0
     var contour: Int = 0

@@ -9,13 +9,20 @@ import SwiftUI
 import UIKit
 
 struct ContentView: View {
-    init() {
+    @Binding var hasFilterSaveSucceeded: Bool
+
+    init(hasFilterSaveSucceeded: Binding<Bool> = .constant(false)) {
         let appearance = UITabBarAppearance()
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = UIColor(.white)
         appearance.shadowColor = nil  // 上部の枠線（シャドウ）を消す
+        appearance.stackedLayoutAppearance.selected.iconColor = .moruMePink
+        appearance.stackedLayoutAppearance.selected.titleTextAttributes = [
+            .foregroundColor: UIColor.moruMePink
+        ]
         UITabBar.appearance().standardAppearance = appearance
         UITabBar.appearance().scrollEdgeAppearance = appearance
+        self._hasFilterSaveSucceeded = hasFilterSaveSucceeded
     }
 
     var body: some View {
@@ -33,7 +40,14 @@ struct ContentView: View {
                     Text("FILTER")
                 }
         }
-        .tint(.morumePink)
+        .modifier(
+            ToastOverlay(
+                showToast: $hasFilterSaveSucceeded,
+                icon: .checkmarkCircleIcon,
+                message: "フィルターを作成しました",
+                type: .success
+            )
+        )
     }
 }
 

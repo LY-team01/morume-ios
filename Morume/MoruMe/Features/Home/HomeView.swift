@@ -22,12 +22,19 @@ struct HomeView: View {
                     Image(.topLogo)
 
                     if let resultPhoto = viewModel.resultPhoto {
-                        ResultCard(image: resultPhoto) {
-                            Task {
-                                await viewModel.saveResultPhoto()
+                        VStack {
+                            ResultCard(image: resultPhoto) {
+                                Task {
+                                    await viewModel.saveResultPhoto()
+                                }
+                            }
+                            .padding(.horizontal, 18)
+                            .padding(.bottom, 60)
+
+                            WideButton(title: "次の写真を加工する") {
+                                viewModel.resetState()
                             }
                         }
-                        .padding(.horizontal, 18)
                     } else {
                         ImageUploadComponent(
                             selectedImage: $viewModel.selectedPhoto,
@@ -44,20 +51,25 @@ struct HomeView: View {
                     isNavigationActive = viewModel.selectedPhoto != nil
                 }
                 .navigationDestination(isPresented: $isNavigationActive) {
-                    if viewModel.selectedPhoto != nil {
-                        FilterEditView()
+                    if let photo = viewModel.selectedPhoto {
+                        PhotoEditView(photo: photo, resultPhoto: $viewModel.resultPhoto)
                     }
                 }
             }
         }
         .modifier(
-            ToastOverlay(showToast: $viewModel.showErrorToast, icon: .errorIcon, message: "エラーが発生しました", type: .error)
+            ToastOverlay(
+                showToast: $viewModel.showErrorToast,
+                icon: .errorIcon,
+                message: "エラーが発生しました",
+                type: .error
+            )
         )
         .modifier(
             ToastOverlay(
                 showToast: $viewModel.showSuccessToast,
-                icon: .checkmarkCircleIcon,
-                message: "フィルターを作成しました",
+                icon: .photoSavedIcon,
+                message: "写真を保存しました",
                 type: .success
             )
         )
