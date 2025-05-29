@@ -21,12 +21,19 @@ struct HomeView: View {
 
                     Image(.topLogo)
 
-                    ImageUploadComponent(
-                        selectedImage: $viewModel.selectedPhoto,
-                        mainMessage: "集合写真をアップしよう",
-                        iconAsset: .peopleIcon
-                    )
-                    .padding(.horizontal, 18)
+                    if let resultPhoto = viewModel.resultPhoto {
+                        ResultCard(image: resultPhoto) {
+                            viewModel.saveResultPhoto()
+                        }
+                        .padding(.horizontal, 18)
+                    } else {
+                        ImageUploadComponent(
+                            selectedImage: $viewModel.selectedPhoto,
+                            mainMessage: "集合写真をアップしよう",
+                            iconAsset: .peopleIcon
+                        )
+                        .padding(.horizontal, 18)
+                    }
 
                     Spacer()
                     Spacer()
