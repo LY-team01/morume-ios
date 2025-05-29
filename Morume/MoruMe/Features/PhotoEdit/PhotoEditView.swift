@@ -73,24 +73,29 @@ struct PhotoEditView: View {
     private var photoDisplayArea: some View {
         GeometryReader { geometry in
             let commonFit = calculateFit(in: geometry.size)
+            let imgSize = viewModel.editPhoto.size
 
-            ZStack(alignment: .topLeading) {
+            ZStack {
                 Image(uiImage: viewModel.editPhoto)
                     .resizable()
                     .scaledToFit()
                     .frame(width: commonFit.dispSize.width, height: commonFit.dispSize.height)
-                    .offset(x: commonFit.xOffset, y: commonFit.yOffset)
+                    .position(x: geometry.size.width / 2, y: geometry.size.height / 2)
 
                 ForEach(viewModel.detectedFaces) { detectedFace in
-                    let faceFit = calculateFit(in: geometry.size, faceRegion: detectedFace.faceRegion)
-                    if let originalBox = faceFit.originalBox {
+                    if let originalBox = calculateFit(in: geometry.size, faceRegion: detectedFace.faceRegion)
+                        .originalBox
+                    {
+                        let dx = (originalBox.midX - imgSize.width / 2) * commonFit.scale
+                        let dy = (originalBox.midY - imgSize.height / 2) * commonFit.scale
+
                         RoundedRectangle(cornerRadius: 7)
                             .stroke(detectedFace.color, lineWidth: 2)
-                            .frame(width: originalBox.width * faceFit.scale, height: originalBox.height * faceFit.scale)
-                            .offset(
-                                x: originalBox.minX * faceFit.scale + faceFit.xOffset,
-                                y: originalBox.minY * faceFit.scale + faceFit.yOffset
+                            .frame(
+                                width: originalBox.width * commonFit.scale,
+                                height: originalBox.height * commonFit.scale
                             )
+                            .position(x: geometry.size.width / 2 + dx, y: geometry.size.height / 2 + dy)
                     }
                 }
             }
