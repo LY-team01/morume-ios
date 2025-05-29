@@ -43,7 +43,7 @@ struct InitialView: View {
             }
         }
         .modifier(
-            ToastOvarlay(showToast: $viewModel.showErrorToast, icon: .errorIcon, message: "エラーが発生しました", type: .error)
+            ToastOverlay(showToast: $viewModel.showErrorToast, icon: .errorIcon, message: "エラーが発生しました", type: .error)
         )
     }
 }

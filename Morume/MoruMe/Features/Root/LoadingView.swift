@@ -60,7 +60,7 @@ struct LoadingView: View {
             }
         }
         .modifier(
-            ToastOvarlay(
+            ToastOverlay(
                 showToast: $showErrorToast,
                 icon: .errorIcon,
                 message: "ネットワークエラーが発生しました",
