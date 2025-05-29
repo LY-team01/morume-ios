@@ -40,8 +40,18 @@ final class PhotoEditRepository {
             )
         }
 
-        detectedFaceRegions = []
-        detectedFaceMeshes = []
+        let (regions, meshes) = try await processFaceRegions(faceRegions)
+        let sortedFaces = sortFacesByLeftToRight(regions: regions, meshes: meshes)
+
+        detectedFaceRegions = sortedFaces.map { $0.0 }
+        detectedFaceMeshes = sortedFaces.map { $0.1 }
+    }
+
+    /// 顔領域を処理してランドマークを検出
+    private func processFaceRegions(_ faceRegions: [CGRect]) async throws -> ([CGRect], [FaceMesh]) {
+        var tempFaceRegions: [CGRect] = []
+        var tempFaceMeshes: [FaceMesh] = []
+
         for faceRegion in faceRegions {
             guard let croppedFaceImage = originalPhoto.cropped(to: faceRegion) else {
                 print("顔の切り抜きに失敗: \(faceRegion)")
@@ -51,10 +61,17 @@ final class PhotoEditRepository {
                 on: croppedFaceImage,
                 actualCropRect: faceRegion
             ) {
-                detectedFaceRegions.append(faceRegion)
-                detectedFaceMeshes.append(faceMesh)
+                tempFaceRegions.append(faceRegion)
+                tempFaceMeshes.append(faceMesh)
             }
         }
+
+        return (tempFaceRegions, tempFaceMeshes)
+    }
+
+    /// 顔を左から右の順番でソート
+    private func sortFacesByLeftToRight(regions: [CGRect], meshes: [FaceMesh]) -> [(CGRect, FaceMesh)] {
+        return zip(regions, meshes).sorted { $0.0.minX < $1.0.minX }
     }
 
     /// 全ての変形を適用して新しいメッシュと画像を生成

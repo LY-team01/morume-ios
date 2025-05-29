@@ -45,15 +45,11 @@ final class PhotoEditViewModel {
         do {
             try await photoEditRepository.detectFaceAndLandmarks()
 
-            // Prepare and sort face data by leftmost X (minX)
             let regions = photoEditRepository.detectedFaceRegions
             let meshes = photoEditRepository.detectedFaceMeshes
-            let sortedFaces = zip(regions, meshes)
-                .sorted { $0.0.minX < $1.0.minX }
 
-            // Clear and repopulate detectedFaces with colors in sorted order
             detectedFaces = []
-            for (index, (region, mesh)) in sortedFaces.enumerated() {
+            for (index, (region, mesh)) in zip(regions, meshes).enumerated() {
                 guard index < faceColors.count else { break }
                 let detectedFace = DetectedFace(
                     faceRegion: region,
@@ -68,6 +64,32 @@ final class PhotoEditViewModel {
             hasFaceDetectionCompleted = true
         } catch {
             print(error)
+        }
+    }
+
+    func applyFilterParameters(faceIndex: Int) {
+        guard photoEditRepository.detectedFaceMeshes.count > 0,
+            let filterParameters = detectedFaces[faceIndex].user?.filter
+        else {
+            return
+        }
+
+        let scales = filterParameters.toScale()
+
+        do {
+            let transormedImage = try photoEditRepository.applyTransformations(
+                faceIndex: 0,
+                eyeScale: CGFloat(scales["eye"]!),
+                noseScale: CGFloat(scales["nose"]!),
+                mouthScale: CGFloat(scales["mouth"]!)
+            )
+            if let faceRegion = photoEditRepository.detectedFaceRegions.first,
+                let croppedImage = transormedImage.cropped(to: faceRegion)
+            {
+                editPhoto = croppedImage
+            }
+        } catch {
+            print("変形の適用に失敗しました: \(error)")
         }
     }
 }
