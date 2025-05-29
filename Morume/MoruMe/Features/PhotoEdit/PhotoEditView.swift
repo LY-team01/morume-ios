@@ -45,6 +45,7 @@ struct PhotoEditView: View {
         .toolbar(.hidden, for: .tabBar)
         .task {
             await viewModel.detectFaceLandmarks()
+            viewModel.applyFilterParameters()
         }
     }
 

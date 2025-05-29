@@ -67,29 +67,36 @@ final class PhotoEditViewModel {
         }
     }
 
-    func applyFilterParameters(faceIndex: Int) {
-        guard photoEditRepository.detectedFaceMeshes.count > 0,
-            let filterParameters = detectedFaces[faceIndex].user?.filter
-        else {
+    func applyFilterParameters() {
+        guard photoEditRepository.detectedFaceMeshes.count > 0 else {
             return
         }
 
-        let scales = filterParameters.toScale()
-
-        do {
-            let transormedImage = try photoEditRepository.applyTransformations(
-                faceIndex: 0,
-                eyeScale: CGFloat(scales["eye"]!),
-                noseScale: CGFloat(scales["nose"]!),
-                mouthScale: CGFloat(scales["mouth"]!)
-            )
-            if let faceRegion = photoEditRepository.detectedFaceRegions.first,
-                let croppedImage = transormedImage.cropped(to: faceRegion)
-            {
-                editPhoto = croppedImage
-            }
-        } catch {
-            print("変形の適用に失敗しました: \(error)")
+        isProcessing = true
+        defer {
+            isProcessing = false
         }
+
+        var image = originalPhoto
+        for detectedFace in detectedFaces {
+            guard let user = detectedFace.user, let faceMesh = detectedFace.faceMesh else {
+                continue
+            }
+            let scales = user.filter!.toScale()
+
+            do {
+                image = try photoEditRepository.applyTransformations(
+                    to: image,
+                    faceMesh: faceMesh,
+                    eyeScale: CGFloat(scales["eye"]!),
+                    noseScale: CGFloat(scales["nose"]!),
+                    mouthScale: CGFloat(scales["mouth"]!)
+                )
+            } catch {
+                print("変形の適用に失敗しました: \(error)")
+            }
+        }
+
+        editPhoto = image
     }
 }
