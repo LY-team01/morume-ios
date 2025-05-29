@@ -22,6 +22,7 @@ struct PhotoEditView: View {
                     .ignoresSafeArea()
 
                 Color(uiColor: .systemGray6)
+                    .ignoresSafeArea(edges: .bottom)
 
                 VStack(spacing: 0) {
                     photoDisplayArea
@@ -32,7 +33,6 @@ struct PhotoEditView: View {
         }
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden()
-        .toolbarRole(.editor)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 backButton

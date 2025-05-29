@@ -18,13 +18,17 @@ struct UserSelectView: View {
                     .ignoresSafeArea()
 
                 Color(uiColor: .systemGray6)
+                    .ignoresSafeArea(edges: .bottom)
 
                 userList
             }
         }
         .navigationBarTitleDisplayMode(.inline)
-        .toolbarRole(.editor)
+        .navigationBarBackButtonHidden()
         .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                backButton
+            }
             ToolbarItem(placement: .principal) {
                 Text("ユーザー選択")
                     .foregroundStyle(.moruMePink)
@@ -32,10 +36,25 @@ struct UserSelectView: View {
         }
         .toolbar(.hidden, for: .tabBar)
         .task {
-            // 全ユーザーを取得
+            do {
+                try await viewModel.fetchAllUsers()
+            } catch {
+                print("Error fetching users: \(error)")
+            }
         }
     }
 
+    // MARK: backButton
+    private var backButton: some View {
+        Button {
+            dismiss()
+        } label: {
+            Image(systemName: "chevron.backward")
+                .foregroundStyle(.moruMePink)
+        }
+    }
+
+    // MARK: userList
     private var userList: some View {
         List {
             // リスト
@@ -44,6 +63,6 @@ struct UserSelectView: View {
 }
 
 #Preview {
-    @Previewable @State var selectedUser: User? = nil
+    @Previewable @State var selectedUser: User?
     UserSelectView(selectedUser: $selectedUser)
 }
