@@ -52,17 +52,27 @@ final class PhotoEditRepository {
         var tempFaceRegions: [CGRect] = []
         var tempFaceMeshes: [FaceMesh] = []
 
-        for faceRegion in faceRegions {
-            guard let croppedFaceImage = originalPhoto.cropped(to: faceRegion) else {
-                print("顔の切り抜きに失敗: \(faceRegion)")
-                continue
+        try await withThrowingTaskGroup(of: (CGRect, FaceMesh)?.self) { group in
+            for faceRegion in faceRegions {
+                group.addTask { [self] in
+                    guard let croppedFaceImage = originalPhoto.cropped(to: faceRegion) else {
+                        print("顔の切り抜きに失敗: \(faceRegion)")
+                        return nil
+                    }
+                    if let faceMesh = try await faceLandmarkService.detectLandmarks(
+                        on: croppedFaceImage,
+                        actualCropRect: faceRegion
+                    ) {
+                        return (faceRegion, faceMesh)
+                    }
+                    return nil
+                }
             }
-            if let faceMesh = try await faceLandmarkService.detectLandmarks(
-                on: croppedFaceImage,
-                actualCropRect: faceRegion
-            ) {
-                tempFaceRegions.append(faceRegion)
-                tempFaceMeshes.append(faceMesh)
+            for try await result in group {
+                if let (region, mesh) = result {
+                    tempFaceRegions.append(region)
+                    tempFaceMeshes.append(mesh)
+                }
             }
         }
 
