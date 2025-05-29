@@ -10,6 +10,12 @@ import SwiftUI
 struct UserSelectView: View {
     @Environment(\.dismiss) private var dismiss
     @Binding var selectedUser: User?
+    @State private var viewModel = UserSelectViewModel()
+
+    init(selectedUser: Binding<User?>) {
+        self._selectedUser = selectedUser
+        UIRefreshControl.appearance().tintColor = UIColor(Color.moruMePink)
+    }
 
     var body: some View {
         NavigationView {
@@ -20,7 +26,13 @@ struct UserSelectView: View {
                 Color(uiColor: .systemGray6)
                     .ignoresSafeArea(edges: .bottom)
 
-                userList
+                if viewModel.isProcessing {
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle(tint: .moruMePink))
+                        .scaleEffect(1.5)
+                } else {
+                    userList
+                }
             }
         }
         .navigationBarTitleDisplayMode(.inline)
@@ -57,7 +69,30 @@ struct UserSelectView: View {
     // MARK: userList
     private var userList: some View {
         List {
-            // リスト
+            ForEach($viewModel.allUsers) { $user in
+                Button {
+                    selectedUser = user
+                    dismiss()
+                } label: {
+                    HStack {
+                        Text(user.nickname)
+                            .foregroundStyle(Color(uiColor: .systemGray2))
+                        Spacer()
+                        if user == selectedUser {
+                            Image(systemName: "checkmark")
+                                .foregroundStyle(.moruMePink)
+                        }
+                    }
+                }
+            }
+        }
+        .scrollContentBackground(.hidden)
+        .refreshable {
+            do {
+                try await viewModel.refreshUsers()
+            } catch {
+                print("Error refreshing users: \(error)")
+            }
         }
     }
 }
