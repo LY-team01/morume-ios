@@ -45,19 +45,24 @@ struct HomeView: View {
                 }
                 .navigationDestination(isPresented: $isNavigationActive) {
                     if let photo = viewModel.selectedPhoto {
-                        PhotoEditView(photo: photo)
+                        PhotoEditView(photo: photo, resultPhoto: $viewModel.resultPhoto)
                     }
                 }
             }
         }
         .modifier(
-            ToastOverlay(showToast: $viewModel.showErrorToast, icon: .errorIcon, message: "エラーが発生しました", type: .error)
+            ToastOverlay(
+                showToast: $viewModel.showErrorToast,
+                icon: .errorIcon,
+                message: "エラーが発生しました",
+                type: .error
+            )
         )
         .modifier(
             ToastOverlay(
                 showToast: $viewModel.showSuccessToast,
-                icon: .checkmarkCircleIcon,
-                message: "フィルターを作成しました",
+                icon: .photoSavedIcon,
+                message: "写真を保存しました",
                 type: .success
             )
         )

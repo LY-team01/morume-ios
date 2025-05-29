@@ -9,9 +9,11 @@ import SwiftUI
 
 struct PhotoEditView: View {
     @Environment(\.dismiss) private var dismiss
+    @Binding var resultPhoto: UIImage?
     @State private var viewModel: PhotoEditViewModel
 
-    init(photo: UIImage) {
+    init(photo: UIImage, resultPhoto: Binding<UIImage?>) {
+        self._resultPhoto = resultPhoto
         self.viewModel = PhotoEditViewModel(originalImage: photo)
     }
 
@@ -159,7 +161,8 @@ struct PhotoEditView: View {
     // MARK: createPhotoButton
     private var createPhotoButton: some View {
         WideButton(title: "写真を加工する") {
-            // ホーム画面に画像を渡して戻る
+            resultPhoto = viewModel.editPhoto
+            dismiss()
         }
     }
 
@@ -219,6 +222,7 @@ private struct SBButtonStyle: ButtonStyle {
 }
 
 #Preview {
+    @Previewable @State var resultPhoto: UIImage?
     let photo = UIImage(resource: .sampleGroupPhoto)
-    PhotoEditView(photo: photo)
+    PhotoEditView(photo: photo, resultPhoto: $resultPhoto)
 }
