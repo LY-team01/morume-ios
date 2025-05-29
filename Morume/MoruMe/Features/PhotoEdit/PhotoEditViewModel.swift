@@ -22,6 +22,7 @@ final class PhotoEditViewModel {
     var detectedFaces: [DetectedFace] = []
 
     var isProcessing = false
+    var showResetAlert = false
 
     init(originalImage: UIImage) {
         self.originalPhoto = originalImage

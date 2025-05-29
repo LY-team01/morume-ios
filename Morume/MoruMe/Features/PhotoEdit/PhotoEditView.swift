@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct PhotoEditView: View {
+    @Environment(\.dismiss) private var dismiss
     @State private var viewModel: PhotoEditViewModel
 
     init(photo: UIImage) {
@@ -17,8 +18,10 @@ struct PhotoEditView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                Color(uiColor: .systemGray6)
+                MoruMeBackground()
                     .ignoresSafeArea()
+
+                Color(uiColor: .systemGray6)
 
                 VStack(spacing: 0) {
                     photoDisplayArea
@@ -27,8 +30,42 @@ struct PhotoEditView: View {
                 }
             }
         }
+        .navigationBarTitleDisplayMode(.inline)
+        .navigationBarBackButtonHidden()
+        .toolbarRole(.editor)
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                backButton
+            }
+            ToolbarItem(placement: .principal) {
+                Text("写真を加工")
+                    .foregroundStyle(.moruMePink)
+            }
+        }
+        .toolbar(.hidden, for: .tabBar)
         .task {
             await viewModel.detectFaceLandmarks()
+        }
+    }
+
+    // MARK: backButton
+    private var backButton: some View {
+        Button {
+            viewModel.showResetAlert = true
+        } label: {
+            Image(systemName: "chevron.backward")
+                .foregroundStyle(.moruMePink)
+        }
+        .alert("最初からやり直す", isPresented: $viewModel.showResetAlert) {
+            Button(role: .cancel) {
+            } label: {
+                Text("いいえ")
+            }
+            Button("はい", role: .destructive) {
+                dismiss()
+            }
+        } message: {
+            Text("編集内容が削除されます。よろしいですか？")
         }
     }
 
@@ -37,7 +74,6 @@ struct PhotoEditView: View {
         Image(uiImage: viewModel.editPhoto)
             .resizable()
             .scaledToFit()
-            .frame(maxWidth: .infinity, maxHeight: 350)
     }
 
     // MARK: userList
