@@ -42,8 +42,8 @@ struct HomeView: View {
                     isNavigationActive = viewModel.selectedPhoto != nil
                 }
                 .navigationDestination(isPresented: $isNavigationActive) {
-                    if let photo = viewModel.selectedPhoto {
-                        InitialFilterMakeView(photo: photo, showInitialViewErrorToast: $viewModel.showErrorToast)
+                    if viewModel.selectedPhoto != nil {
+                        FilterEditView()
                     }
                 }
             }
