@@ -27,6 +27,10 @@ struct PhotoEditView: View {
                 VStack(spacing: 0) {
                     photoDisplayArea
 
+                    if viewModel.originalPhoto != viewModel.editPhoto {
+                        resetButton
+                    }
+
                     userList
                 }
             }
@@ -75,10 +79,10 @@ struct PhotoEditView: View {
     private var photoDisplayArea: some View {
         GeometryReader { geometry in
             let commonFit = calculateFit(in: geometry.size)
-            let imgSize = viewModel.editPhoto.size
+            let imgSize = viewModel.displayedPhoto.size
 
             ZStack {
-                Image(uiImage: viewModel.editPhoto)
+                Image(uiImage: viewModel.displayedPhoto)
                     .resizable()
                     .scaledToFit()
                     .frame(width: commonFit.dispSize.width, height: commonFit.dispSize.height)
@@ -123,12 +127,32 @@ struct PhotoEditView: View {
         .scrollContentBackground(.hidden)
     }
 
+    // MARK: resetButton
+    private var resetButton: some View {
+        Button {
+        } label: {
+            HStack {
+                Image(systemName: "arrow.clockwise")
+                    .font(.system(size: 20))
+                Text("元の写真を確認")
+                    .font(.system(size: 17))
+            }
+        }
+        .buttonStyle(
+            SBButtonStyle(tintColor: .moruMePink, onTouchDown: {
+                viewModel.showOriginalPhoto = true
+            }, onTouchUp: {
+                viewModel.showOriginalPhoto = false
+            })
+        )
+    }
+
     // MARK: Fit Calculation
     // swiftlint:disable:next large_tuple
     private func calculateFit(in containerSize: CGSize, faceRegion: CGRect? = nil) -> (
         scale: CGFloat, dispSize: CGSize, xOffset: CGFloat, yOffset: CGFloat, originalBox: CGRect?
     ) {
-        let imgSize = viewModel.editPhoto.size
+        let imgSize = viewModel.displayedPhoto.size
         let scale = min(containerSize.width / imgSize.width, containerSize.height / imgSize.height)
         let dispSize = CGSize(width: imgSize.width * scale, height: imgSize.height * scale)
         let xOffset = (containerSize.width - dispSize.width) / 2
@@ -158,6 +182,23 @@ struct PhotoEditView: View {
         }
 
         return (scale, dispSize, xOffset, yOffset, originalBox)
+    }
+}
+
+// MARK: SBButtonStyle
+private struct SBButtonStyle: ButtonStyle {
+    let tintColor: Color
+    let pressedColor: Color = Color(uiColor: .systemGray3)
+    let onTouchDown: () -> Void
+    let onTouchUp: () -> Void
+
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .onChange(of: configuration.isPressed) {
+                configuration.isPressed ? onTouchDown() : onTouchUp()
+            }
+            .foregroundStyle(configuration.isPressed ? pressedColor : tintColor)
+            .sensoryFeedback(.selection, trigger: configuration.isPressed)
     }
 }
 

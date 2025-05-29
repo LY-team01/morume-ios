@@ -15,14 +15,18 @@ final class PhotoEditViewModel {
     private let photoEditRepository: PhotoEditRepository
     private let filterRepository: FilterRepository
     private let userRepository: UserRepository
-    private let originalPhoto: UIImage
     private let faceColors: [Color] = [.red, .orange, .yellow, .green, .blue]
+    let originalPhoto: UIImage
 
     var editPhoto: UIImage
+    var displayedPhoto: UIImage {
+        showOriginalPhoto ? originalPhoto : editPhoto
+    }
     var detectedFaces: [DetectedFace] = []
 
     var isProcessing = false
     var showResetAlert = false
+    var showOriginalPhoto = false
     var hasFaceDetectionCompleted = false
 
     init(originalImage: UIImage) {
