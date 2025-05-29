@@ -106,26 +106,16 @@ struct PhotoEditView: View {
 
     // MARK: userList
     private var userList: some View {
-        List {
-            ForEach(viewModel.detectedFaces) { detectedFace in
-                Button {
-                    print("pushed")
-                } label: {
-                    HStack(spacing: 18) {
-                        RoundedRectangle(cornerRadius: 7)
-                            .fill(detectedFace.color)
-                            .frame(width: 30, height: 30)
-
-                        if let nickname = detectedFace.user?.nickname {
-                            Text(nickname)
-                        } else {
-                            Text("ユーザー未選択")
-                        }
-                        Spacer()
-                        Image(systemName: "chevron.right")
-                    }
-                    .foregroundStyle(Color(uiColor: .systemGray2))
+        List($viewModel.detectedFaces) { $detectedFace in
+            NavigationLink(destination: UserSelectView(selectedUser: $detectedFace.user)) {
+                HStack(spacing: 18) {
+                    RoundedRectangle(cornerRadius: 7)
+                        .fill(detectedFace.color)
+                        .frame(width: 30, height: 30)
+                    Text(detectedFace.user?.nickname ?? "ユーザー未選択")
+                    Spacer()
                 }
+                .foregroundStyle(Color(uiColor: .systemGray2))
             }
         }
         .scrollBounceBehavior(.basedOnSize)
