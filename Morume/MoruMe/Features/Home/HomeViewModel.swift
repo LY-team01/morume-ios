@@ -31,7 +31,7 @@ final class HomeViewModel {
         }
 
         UIImageWriteToSavedPhotosAlbum(photo, nil, nil, nil)
-        self.showSuccessToast = true
+        showSuccessToast = true
     }
 
     func resetState() {
