@@ -32,6 +32,11 @@ struct PhotoEditView: View {
                     }
 
                     userList
+
+                    Spacer()
+
+                    createPhotoButton
+                        .padding(.bottom, 26)
                 }
             }
         }
@@ -109,6 +114,30 @@ struct PhotoEditView: View {
         }
     }
 
+    // MARK: resetButton
+    private var resetButton: some View {
+        Button {
+        } label: {
+            HStack {
+                Image(systemName: "arrow.clockwise")
+                    .font(.system(size: 20))
+                Text("元の写真を確認")
+                    .font(.system(size: 17))
+            }
+        }
+        .buttonStyle(
+            SBButtonStyle(
+                tintColor: .moruMePink,
+                onTouchDown: {
+                    viewModel.showOriginalPhoto = true
+                },
+                onTouchUp: {
+                    viewModel.showOriginalPhoto = false
+                }
+            )
+        )
+    }
+
     // MARK: userList
     private var userList: some View {
         List($viewModel.detectedFaces) { $detectedFace in
@@ -127,24 +156,11 @@ struct PhotoEditView: View {
         .scrollContentBackground(.hidden)
     }
 
-    // MARK: resetButton
-    private var resetButton: some View {
-        Button {
-        } label: {
-            HStack {
-                Image(systemName: "arrow.clockwise")
-                    .font(.system(size: 20))
-                Text("元の写真を確認")
-                    .font(.system(size: 17))
-            }
+    // MARK: createPhotoButton
+    private var createPhotoButton: some View {
+        WideButton(title: "写真を加工する") {
+            // ホーム画面に画像を渡して戻る
         }
-        .buttonStyle(
-            SBButtonStyle(tintColor: .moruMePink, onTouchDown: {
-                viewModel.showOriginalPhoto = true
-            }, onTouchUp: {
-                viewModel.showOriginalPhoto = false
-            })
-        )
     }
 
     // MARK: Fit Calculation
@@ -185,7 +201,7 @@ struct PhotoEditView: View {
     }
 }
 
-// MARK: SBButtonStyle
+// MARK: - SBButtonStyle
 private struct SBButtonStyle: ButtonStyle {
     let tintColor: Color
     let pressedColor: Color = Color(uiColor: .systemGray3)
