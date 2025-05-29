@@ -58,7 +58,7 @@ struct HomeView: View {
                 showToast: $viewModel.showErrorToast,
                 icon: .checkmarkCircleIcon,
                 message: "フィルターを作成しました",
-                type: .error
+                type: .success
             )
         )
     }
