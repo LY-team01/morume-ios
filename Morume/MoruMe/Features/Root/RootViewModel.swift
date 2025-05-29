@@ -8,8 +8,9 @@
 import Observation
 import SwiftUI
 
+@MainActor
 @Observable
-class RootViewModel {
+final class RootViewModel {
     enum AppState {
         case loading
         case error
