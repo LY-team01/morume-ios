@@ -25,4 +25,8 @@ final class UserSelectViewModel {
 
         allUsers = try await userRepository.fetchUsers()
     }
+
+    func refreshUsers() async throws {
+        allUsers = try await userRepository.fetchUsers()
+    }
 }
