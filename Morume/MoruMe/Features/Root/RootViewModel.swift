@@ -19,13 +19,18 @@ class RootViewModel {
 
     var appState: AppState = .loading
     private let filterRepository: MoruMeAPIFilterRepository
+    private let authService: AuthService
 
     init() {
         self.filterRepository = MoruMeAPIFilterRepository()
+        self.authService = FirebaseAuthService()
     }
 
     func checkInitialState() async {
         do {
+            // Firebase認証ログインを実行
+            try await authService.login()
+
             // 自分のフィルターを取得してみる
             _ = try await filterRepository.fetchMyFilter()
 
