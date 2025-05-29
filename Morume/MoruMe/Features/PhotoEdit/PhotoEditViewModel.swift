@@ -23,6 +23,7 @@ final class PhotoEditViewModel {
 
     var isProcessing = false
     var showResetAlert = false
+    var hasFaceDetectionCompleted = false
 
     init(originalImage: UIImage) {
         self.originalPhoto = originalImage
@@ -33,6 +34,9 @@ final class PhotoEditViewModel {
     }
 
     func detectFaceLandmarks() async {
+        // 既に顔検出が完了している場合は再実行しない
+        guard !hasFaceDetectionCompleted else { return }
+
         isProcessing = true
         defer {
             isProcessing = false
@@ -59,6 +63,9 @@ final class PhotoEditViewModel {
                 )
                 detectedFaces.append(detectedFace)
             }
+
+            // 顔検出完了フラグを設定
+            hasFaceDetectionCompleted = true
         } catch {
             print(error)
         }
