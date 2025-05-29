@@ -70,6 +70,7 @@ struct PhotoEditView: View {
     }
 
     // MARK: editArea
+    // FIXME: 横長画像の時、GeometryReader内上部に余白ができてしまう
     private var photoDisplayArea: some View {
         GeometryReader { geometry in
             let commonFit = calculateFit(in: geometry.size)
