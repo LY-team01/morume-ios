@@ -11,6 +11,8 @@
 		176C8E492DE1D91C00DADCAB /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 176C8E482DE1D91C00DADCAB /* FirebaseCore */; };
 		1790CBE92DE2F35C00D72EB9 /* DelaunayTriangulation in Frameworks */ = {isa = PBXBuildFile; productRef = 1790CBE82DE2F35C00D72EB9 /* DelaunayTriangulation */; };
 		1C978AD67F8B4902B0693EB1 /* Pods_MoruMe.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BBAE5E154BE146EFF6C2C156 /* Pods_MoruMe.framework */; };
+		C18F86CF2DE8429000A05F81 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C18F86CE2DE8429000A05F81 /* Settings.bundle */; };
+		C18F86D12DE842EB00A05F81 /* license_plist.yml in Resources */ = {isa = PBXBuildFile; fileRef = C18F86D02DE842EB00A05F81 /* license_plist.yml */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -18,6 +20,8 @@
 		1DD47B77BB99035E0D36D2D0 /* Pods-MoruMe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MoruMe.release.xcconfig"; path = "Target Support Files/Pods-MoruMe/Pods-MoruMe.release.xcconfig"; sourceTree = "<group>"; };
 		53ECC382A56AE3887025E0D1 /* Pods-MoruMe.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MoruMe.debug.xcconfig"; path = "Target Support Files/Pods-MoruMe/Pods-MoruMe.debug.xcconfig"; sourceTree = "<group>"; };
 		BBAE5E154BE146EFF6C2C156 /* Pods_MoruMe.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MoruMe.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C18F86CE2DE8429000A05F81 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		C18F86D02DE842EB00A05F81 /* license_plist.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = license_plist.yml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -54,6 +58,8 @@
 		17A95E472DD58E750096EDDE = {
 			isa = PBXGroup;
 			children = (
+				C18F86D02DE842EB00A05F81 /* license_plist.yml */,
+				C18F86CE2DE8429000A05F81 /* Settings.bundle */,
 				17A95E522DD58E750096EDDE /* MoruMe */,
 				17A95E512DD58E750096EDDE /* Products */,
 				A0DB07B420A6E484B76C5059 /* Pods */,
@@ -89,10 +95,12 @@
 				17A95E4C2DD58E750096EDDE /* Sources */,
 				17A95E4D2DD58E750096EDDE /* Frameworks */,
 				17A95E4E2DD58E750096EDDE /* Resources */,
+				C18F86CB2DE8422100A05F81 /* ShellScript */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				C18F86CD2DE8426400A05F81 /* PBXTargetDependency */,
 				17D5456A2DD8D8B70044C45E /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
@@ -136,6 +144,7 @@
 				17D545682DD8D84E0044C45E /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */,
 				176C8E452DE1D91C00DADCAB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				1790CBE72DE2F35C00D72EB9 /* XCRemoteSwiftPackageReference "DelaunaySwift" */,
+				C18F86CA2DE8421300A05F81 /* XCRemoteSwiftPackageReference "LicensePlist" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 17A95E512DD58E750096EDDE /* Products */;
@@ -152,6 +161,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C18F86CF2DE8429000A05F81 /* Settings.bundle in Resources */,
+				C18F86D12DE842EB00A05F81 /* license_plist.yml in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -180,6 +191,23 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		C18F86CB2DE8422100A05F81 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\necho \"Will copy acknowledgements\"\nACKNOWLEDGEMENTS_DIR=${BUILT_PRODUCTS_DIR}/${CONTENTS_FOLDER_PATH}/com.mono0926.LicensePlist.Output\nDESTINATION_PATH=${BUILT_PRODUCTS_DIR}/${CONTENTS_FOLDER_PATH}/Settings.bundle/\ncp -r \"${ACKNOWLEDGEMENTS_DIR}\"/* \"${DESTINATION_PATH}\"\nrm -rf \"${ACKNOWLEDGEMENTS_DIR}\"\n";
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -196,6 +224,10 @@
 		17D5456A2DD8D8B70044C45E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			productRef = 17D545692DD8D8B70044C45E /* SwiftLintBuildToolPlugin */;
+		};
+		C18F86CD2DE8426400A05F81 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = C18F86CC2DE8426400A05F81 /* LicensePlistBuildTool */;
 		};
 /* End PBXTargetDependency section */
 
@@ -237,7 +269,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -300,7 +332,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -329,6 +361,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = morume;
 				INFOPLIST_KEY_NSCameraUsageDescription = "このアプリは加工を行う顔写真を取得するためにカメラを使用します。";
@@ -364,6 +397,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				EXCLUDED_ARCHS = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_CFBundleDisplayName = morume;
@@ -438,6 +472,14 @@
 				minimumVersion = 0.59.1;
 			};
 		};
+		C18F86CA2DE8421300A05F81 /* XCRemoteSwiftPackageReference "LicensePlist" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mono0926/LicensePlist.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.27.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -460,6 +502,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 17D545682DD8D84E0044C45E /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */;
 			productName = "plugin:SwiftLintBuildToolPlugin";
+		};
+		C18F86CC2DE8426400A05F81 /* LicensePlistBuildTool */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C18F86CA2DE8421300A05F81 /* XCRemoteSwiftPackageReference "LicensePlist" */;
+			productName = "plugin:LicensePlistBuildTool";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
