@@ -71,7 +71,7 @@ struct UserSelectView: View {
         List {
             ForEach($viewModel.allUsers) { $user in
                 Button {
-                    selectedUser = user
+                    selectedUser = selectedUser == user ? nil : user
                     dismiss()
                 } label: {
                     HStack {
