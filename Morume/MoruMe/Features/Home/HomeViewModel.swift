@@ -9,6 +9,7 @@ import Observation
 import Photos
 import UIKit
 
+@MainActor
 @Observable
 final class HomeViewModel {
     var selectedPhoto: UIImage?
