@@ -34,14 +34,14 @@ final class InitialFilterMakeViewModel {
     }
 
     // MARK: フィルター編集
-    func detectFaceLandmarks() {
+    func detectFaceLandmarks() async {
         isProcessing = true
         defer {
             isProcessing = false
         }
 
         do {
-            try photoEditRepository.detectFaceAndLandmarks()
+            try await photoEditRepository.detectFaceAndLandmarks()
             if let faceRegion = photoEditRepository.detectedFaceRegions.first {
                 editPhoto = originalPhoto.cropped(to: faceRegion)
             } else {

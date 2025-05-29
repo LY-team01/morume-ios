@@ -29,7 +29,7 @@ final class PhotoEditRepository {
     }
 
     /// 顔の検出からランドマーク抽出までの処理を実行
-    func detectFaceAndLandmarks() throws {
+    func detectFaceAndLandmarks() async throws {
         let faceRegions = try faceDetectionService.detectFaceRegions(in: originalPhoto)
 
         if faceRegions.isEmpty {
@@ -42,17 +42,15 @@ final class PhotoEditRepository {
 
         for faceRegion in faceRegions {
             guard let croppedFaceImage = originalPhoto.cropped(to: faceRegion) else {
+                print("顔の切り抜きに失敗: \(faceRegion)")
                 continue
             }
-
-            Task {
-                if let faceMesh = try await faceLandmarkService.detectLandmarks(
-                    on: croppedFaceImage,
-                    actualCropRect: faceRegion
-                ) {
-                    detectedFaceRegions.append(faceRegion)
-                    detectedFaceMeshes.append(faceMesh)
-                }
+            if let faceMesh = try await faceLandmarkService.detectLandmarks(
+                on: croppedFaceImage,
+                actualCropRect: faceRegion
+            ) {
+                detectedFaceRegions.append(faceRegion)
+                detectedFaceMeshes.append(faceMesh)
             }
         }
     }
