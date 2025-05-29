@@ -1,5 +1,5 @@
 //
-//  UserSelectionViewModel.swift
+//  UserSelectViewModel.swift
 //  MoruMe
 //
 //  Created by 青原光 on 2025/05/30.
