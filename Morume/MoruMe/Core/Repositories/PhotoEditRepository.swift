@@ -40,6 +40,8 @@ final class PhotoEditRepository {
             )
         }
 
+        detectedFaceRegions = []
+        detectedFaceMeshes = []
         for faceRegion in faceRegions {
             guard let croppedFaceImage = originalPhoto.cropped(to: faceRegion) else {
                 print("顔の切り抜きに失敗: \(faceRegion)")
