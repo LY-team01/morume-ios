@@ -23,7 +23,9 @@ struct HomeView: View {
 
                     if let resultPhoto = viewModel.resultPhoto {
                         ResultCard(image: resultPhoto) {
-                            viewModel.saveResultPhoto()
+                            Task {
+                                await viewModel.saveResultPhoto()
+                            }
                         }
                         .padding(.horizontal, 18)
                     } else {

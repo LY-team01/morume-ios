@@ -17,21 +17,20 @@ final class HomeViewModel {
     var showErrorToast = false
     var showSuccessToast = false
 
-    func saveResultPhoto() {
+    func saveResultPhoto() async {
         guard let photo = resultPhoto else {
             showErrorToast = true
             return
         }
 
-        PHPhotoLibrary.requestAuthorization { status in
-            guard status == .authorized || status == .limited else {
-                self.showErrorToast = true
-                return
-            }
-
-            UIImageWriteToSavedPhotosAlbum(photo, nil, nil, nil)
-            self.showSuccessToast = true
+        let status = await PHPhotoLibrary.requestAuthorization(for: .addOnly)
+        guard status == .authorized || status == .limited else {
+            showErrorToast = true
+            return
         }
+
+        UIImageWriteToSavedPhotosAlbum(photo, nil, nil, nil)
+        self.showSuccessToast = true
     }
 
     func resetState() {
