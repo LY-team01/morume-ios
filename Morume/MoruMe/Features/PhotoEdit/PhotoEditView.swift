@@ -71,9 +71,31 @@ struct PhotoEditView: View {
 
     // MARK: editArea
     private var photoDisplayArea: some View {
-        Image(uiImage: viewModel.editPhoto)
-            .resizable()
-            .scaledToFit()
+        GeometryReader { geometry in
+            let commonFit = calculateFit(in: geometry.size)
+
+            ZStack(alignment: .topLeading) {
+                Image(uiImage: viewModel.editPhoto)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: commonFit.dispSize.width, height: commonFit.dispSize.height)
+                    .offset(x: commonFit.xOffset, y: commonFit.yOffset)
+
+                ForEach(viewModel.detectedFaces) { detectedFace in
+                    let faceFit = calculateFit(in: geometry.size, faceRegion: detectedFace.faceRegion)
+                    if let originalBox = faceFit.originalBox {
+                        RoundedRectangle(cornerRadius: 7)
+                            .stroke(detectedFace.color, lineWidth: 2)
+                            .frame(width: originalBox.width * faceFit.scale, height: originalBox.height * faceFit.scale)
+                            .offset(
+                                x: originalBox.minX * faceFit.scale + faceFit.xOffset,
+                                y: originalBox.minY * faceFit.scale + faceFit.yOffset
+                            )
+                    }
+                }
+            }
+            .frame(width: geometry.size.width, height: geometry.size.height)
+        }
     }
 
     // MARK: userList
@@ -102,6 +124,43 @@ struct PhotoEditView: View {
         }
         .scrollBounceBehavior(.basedOnSize)
         .scrollContentBackground(.hidden)
+    }
+
+    // MARK: Fit Calculation
+    // swiftlint:disable:next large_tuple
+    private func calculateFit(in containerSize: CGSize, faceRegion: CGRect? = nil) -> (
+        scale: CGFloat, dispSize: CGSize, xOffset: CGFloat, yOffset: CGFloat, originalBox: CGRect?
+    ) {
+        let imgSize = viewModel.editPhoto.size
+        let scale = min(containerSize.width / imgSize.width, containerSize.height / imgSize.height)
+        let dispSize = CGSize(width: imgSize.width * scale, height: imgSize.height * scale)
+        let xOffset = (containerSize.width - dispSize.width) / 2
+        let yOffset = (containerSize.height - dispSize.height) / 2
+
+        var originalBox: CGRect?
+        if let expandedBox = faceRegion {
+            // Normalize the expanded box to 0…1
+            let norm = CGRect(
+                x: expandedBox.origin.x / imgSize.width,
+                y: expandedBox.origin.y / imgSize.height,
+                width: expandedBox.width / imgSize.width,
+                height: expandedBox.height / imgSize.height
+            )
+            let expandRatio: CGFloat = 0.5
+            let denom = 1 + expandRatio * 2
+            let origW = norm.width / denom
+            let origH = norm.height / denom
+            let origX = norm.origin.x + norm.width * expandRatio / denom
+            let origY = norm.origin.y + norm.height * expandRatio / denom
+            originalBox = CGRect(
+                x: origX * imgSize.width,
+                y: origY * imgSize.height,
+                width: origW * imgSize.width,
+                height: origH * imgSize.height
+            )
+        }
+
+        return (scale, dispSize, xOffset, yOffset, originalBox)
     }
 }
 
