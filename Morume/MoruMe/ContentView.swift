@@ -9,7 +9,9 @@ import SwiftUI
 import UIKit
 
 struct ContentView: View {
-    init() {
+    @Binding var hasFilterSaveSucceeded: Bool
+
+    init(hasFilterSaveSucceeded: Binding<Bool> = .constant(false)) {
         let appearance = UITabBarAppearance()
         appearance.configureWithOpaqueBackground()
         appearance.backgroundColor = UIColor(.white)
@@ -20,6 +22,7 @@ struct ContentView: View {
         ]
         UITabBar.appearance().standardAppearance = appearance
         UITabBar.appearance().scrollEdgeAppearance = appearance
+        self._hasFilterSaveSucceeded = hasFilterSaveSucceeded
     }
 
     var body: some View {
@@ -37,6 +40,14 @@ struct ContentView: View {
                     Text("FILTER")
                 }
         }
+        .modifier(
+            ToastOverlay(
+                showToast: $hasFilterSaveSucceeded,
+                icon: .checkmarkCircleIcon,
+                message: "フィルターを作成しました",
+                type: .success
+            )
+        )
     }
 }
 
