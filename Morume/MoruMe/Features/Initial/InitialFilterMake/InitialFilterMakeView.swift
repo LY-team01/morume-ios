@@ -36,7 +36,7 @@ struct InitialFilterMakeView: View {
         }
         .ignoresSafeArea(.keyboard)
         .modifier(
-            ToastOvarlay(showToast: $viewModel.showErrorToast, icon: .errorIcon, message: "エラーが発生しました", type: .error)
+            ToastOverlay(showToast: $viewModel.showErrorToast, icon: .errorIcon, message: "エラーが発生しました", type: .error)
         )
         .navigationDestination(isPresented: $viewModel.goToNextView) {
             ContentView()

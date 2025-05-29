@@ -133,6 +133,9 @@ final class MoruMeAPIService: APIService {
             case 401:
                 logger.error("❌ 認証エラー: 401 Unauthorized")
                 throw APIError.authenticationError
+            case 404:
+                logger.error("❌ リソースが見つかりません: 404 Not Found")
+                throw APIError.noData
             default:
                 logger.error("❌ サーバーエラー: \(httpResponse.statusCode)")
                 throw APIError.serverError(httpResponse.statusCode)

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ToastOvarlay: ViewModifier {
+struct ToastOverlay: ViewModifier {
     @Binding var showToast: Bool
     let icon: ImageResource
     let message: String
