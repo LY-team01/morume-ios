@@ -151,6 +151,78 @@ final class PhotoEditRepository {
 
         return warpedImage
     }
+
+    /// 受け取った画像に対してフィルターを適用
+    func applyTransformations(
+        to image: UIImage,
+        faceMesh: FaceMesh,
+        eyeScale: CGFloat,
+        noseScale: CGFloat,
+        mouthScale: CGFloat
+    ) throws -> UIImage {
+        // 元の点をコピー
+        let originalPoints = faceMesh.points
+        var points = originalPoints
+
+        // 変形を順番に適用（点の座標を累積的に変更）
+        if eyeScale != 1 {
+            print("目の変形を適用します")
+            points = meshWarpService.applyEyesScalingTransformation(
+                editingPoints: points,
+                originalPoints: originalPoints,
+                scale: eyeScale
+            )
+        }
+
+        if noseScale != 1 {
+            print("鼻の変形を適用します")
+            points = meshWarpService.applyNoseScalingTransformation(
+                editingPoints: points,
+                originalPoints: originalPoints,
+                scale: noseScale
+            )
+        }
+
+        if mouthScale != 1 {
+            print("口の変形を適用します")
+            points = meshWarpService.applyMouthScalingTransformation(
+                editingPoints: points,
+                originalPoints: originalPoints,
+                scale: mouthScale
+            )
+        }
+
+        // 画像の四隅と辺の中点を追加
+        let extraPoints = FaceMesh.createExtraPoints(forImageSize: image.size)
+
+        // 元のランドマーク点に追加点を結合
+        var augmentedSrc = originalPoints
+        var augmentedDst = points
+        augmentedSrc.append(contentsOf: extraPoints)
+        augmentedDst.append(contentsOf: extraPoints)
+
+        // Delaunay三角形分割
+        let delaunayPoints = augmentedDst.map { DelaunayTriangulation.Point(x: Double($0.x), y: Double($0.y)) }
+        let triangles = triangulate(delaunayPoints)
+
+        // ワーピングで画像を変形
+        guard
+            let warpedImage = meshWarpService.warpImage(
+                image: image,
+                srcPoints: augmentedSrc,
+                dstPoints: augmentedDst,
+                triangles: triangles
+            )
+        else {
+            throw NSError(
+                domain: "PhotoEditRepository",
+                code: -1,
+                userInfo: [NSLocalizedDescriptionKey: "メッシュワーピングに失敗しました"]
+            )
+        }
+
+        return warpedImage
+    }
 }
 
 extension UIImage {
