@@ -139,8 +139,8 @@ struct FilterEditView: View {
                     Image(uiImage: photo)
                         .resizable()
                         .scaledToFill()
-                        .frame(maxWidth: .infinity, maxHeight: 350)
-                        .padding(.bottom, 20)
+                        .frame(maxWidth: .infinity, maxHeight: 300)
+                        .clipped()
                 }
 
                 TextField("ニックネーム", text: $viewModel.nickname)
