@@ -19,7 +19,7 @@ struct FilterEditView: View {
     }
 
     var body: some View {
-        NavigationStack {
+        VStack {
             ZStack {
                 MoruMeBackground()
 
@@ -121,7 +121,7 @@ struct FilterEditView: View {
             }
         } label: {
             Text("保存")
-                .foregroundColor(.morumeGreen)
+                .foregroundStyle(viewModel.nickname.isEmpty ? Color(UIColor.systemGray2) : .morumeGreen)
         }
         .disabled(viewModel.nickname.isEmpty)
     }
@@ -135,6 +135,7 @@ struct FilterEditView: View {
                         .resizable()
                         .scaledToFill()
                         .frame(maxWidth: .infinity, maxHeight: 350)
+                        .padding(.bottom, 20)
                 }
 
                 TextField("ニックネーム", text: $viewModel.nickname)
@@ -148,23 +149,10 @@ struct FilterEditView: View {
                     FilterSlider(label: "口", value: $viewModel.filterParameters.mouth)
                 }
                 .padding(.horizontal, 40)
-
-                WideButton(title: "フィルターを作成") {
-                    Task {
-                        do {
-                            try await viewModel.createFilter()
-                            viewModel.showSuccessToast = true
-                        } catch {
-                            withAnimation {
-                                viewModel.showErrorToast = true
-                            }
-                        }
-                    }
-                }
-                .padding(.bottom, 26)
-                .disabled(viewModel.nickname.isEmpty)
             }
         }
+        // FIXME: なぜかこれがないと画像がナビゲーションバーに被ってしまう。
+        .padding(.top, 0.5)
         .onTapGesture {
             textFieldFocus = false
         }
