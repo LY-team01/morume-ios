@@ -38,7 +38,7 @@ struct InitialFilterMakeView: View {
         .modifier(
             ToastOverlay(showToast: $viewModel.showErrorToast, icon: .errorIcon, message: "エラーが発生しました", type: .error)
         )
-        .navigationDestination(isPresented: $viewModel.goToNextView) {
+        .fullScreenCover(isPresented: $viewModel.goToNextView) {
             ContentView()
         }
         .navigationBarTitleDisplayMode(.inline)

@@ -18,7 +18,7 @@ struct PhotoEditView: View {
     }
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
                 MoruMeBackground()
                     .ignoresSafeArea()

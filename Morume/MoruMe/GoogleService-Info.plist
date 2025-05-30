@@ -9,7 +9,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.lyteam01.MoruMe</string>
+	<string>com.hikaruaohara.morume</string>
 	<key>PROJECT_ID</key>
 	<string>morume-b32ab</string>
 	<key>STORAGE_BUCKET</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:315058571362:ios:a521a77998b1374a56e93b</string>
+	<string>1:315058571362:ios:f7eebdaf948ec4d456e93b</string>
 </dict>
 </plist>
