@@ -68,15 +68,40 @@ final class MetalWarpRenderer {
         guard let cgImage = image.cgImage else { return nil }
         let width = cgImage.width
         let height = cgImage.height
-        // Metalテクスチャ作成（sRGBなし、ガンマ補正なしでロード）
+
+        guard let srcTexture = makeTexture(from: cgImage) else { return nil }
+        guard let dstTexture = makeOutputTexture(width: width, height: height) else { return nil }
+        guard
+            let vertexBuffer = makeVertexBuffer(
+                srcPoints: srcPoints,
+                dstPoints: dstPoints,
+                triangles: triangles,
+                width: width,
+                height: height
+            )
+        else { return nil }
+
+        guard
+            renderWarp(
+                srcTexture: srcTexture,
+                dstTexture: dstTexture,
+                vertexBuffer: vertexBuffer,
+                vertexCount: triangles.count * 3
+            )
+        else { return nil }
+
+        return makeUIImage(from: dstTexture, width: width, height: height, image: image)
+    }
+
+    private func makeTexture(from cgImage: CGImage) -> MTLTexture? {
         let options: [MTKTextureLoader.Option: Any] = [
             .SRGB: false,
-            .generateMipmaps: false
+            .generateMipmaps: false,
         ]
-        guard let srcTexture = try? textureLoader.newTexture(cgImage: cgImage, options: options) else {
-            print("[MetalWarpRenderer] 画像テクスチャ作成失敗")
-            return nil
-        }
+        return try? textureLoader.newTexture(cgImage: cgImage, options: options)
+    }
+
+    private func makeOutputTexture(width: Int, height: Int) -> MTLTexture? {
         let desc = MTLTextureDescriptor.texture2DDescriptor(
             pixelFormat: .bgra8Unorm,
             width: width,
@@ -84,21 +109,29 @@ final class MetalWarpRenderer {
             mipmapped: false
         )
         desc.usage = [.renderTarget, .shaderRead, .shaderWrite]
-        guard let dstTexture = device.makeTexture(descriptor: desc) else {
-            print("[MetalWarpRenderer] 出力テクスチャ作成失敗")
-            return nil
-        }
-        // 頂点バッファ生成
+        return device.makeTexture(descriptor: desc)
+    }
+
+    private func makeVertexBuffer(
+        srcPoints: [CGPoint],
+        dstPoints: [CGPoint],
+        triangles: [Triangle],
+        width: Int,
+        height: Int
+    ) -> MTLBuffer? {
         var vertices: [Float] = []
         for tri in triangles {
             let idx = [tri.point1, tri.point2, tri.point3].map { pt in
-                dstPoints.firstIndex(where: { abs($0.x - CGFloat(pt.x)) < 0.5 && abs($0.y - CGFloat(pt.y)) < 0.5 }) ?? 0
+                dstPoints.firstIndex(where: { abs($0.x - CGFloat(pt.x)) < 0.5 && abs($0.y - CGFloat(pt.y)) < 0.5 })
             }
-            let srcIdx = idx
+            guard let idx1 = idx[0], let idx2 = idx[1], let idx3 = idx[2] else {
+                print("[MetalWarpRenderer] 三角形頂点のインデックスが見つかりません")
+                continue
+            }
+            let validIndices = [idx1, idx2, idx3]
             for i in 0..<3 {
-                let dstPt = dstPoints[idx[i]]
-                let srcPt = srcPoints[srcIdx[i]]
-                // Metal座標系(-1~1)に変換
+                let dstPt = dstPoints[validIndices[i]]
+                let srcPt = srcPoints[validIndices[i]]
                 let x = Float(dstPt.x / CGFloat(width) * 2 - 1)
                 let y = Float(1 - dstPt.y / CGFloat(height) * 2)
                 let u = Float(srcPt.x / CGFloat(width))
@@ -107,11 +140,15 @@ final class MetalWarpRenderer {
             }
         }
         let dataSize = vertices.count * MemoryLayout<Float>.size
-        guard let vertexBuffer = device.makeBuffer(bytes: vertices, length: dataSize, options: []) else { return nil }
-        // コマンドバッファ・レンダーパス
+        return device.makeBuffer(bytes: vertices, length: dataSize, options: [])
+    }
+
+    private func renderWarp(srcTexture: MTLTexture, dstTexture: MTLTexture, vertexBuffer: MTLBuffer, vertexCount: Int)
+        -> Bool
+    {
         guard let commandBuffer = commandQueue.makeCommandBuffer() else {
             print("[MetalWarpRenderer] コマンドバッファ作成失敗")
-            return nil
+            return false
         }
         let rpd = MTLRenderPassDescriptor()
         rpd.colorAttachments[0].texture = dstTexture
@@ -120,13 +157,11 @@ final class MetalWarpRenderer {
         rpd.colorAttachments[0].clearColor = MTLClearColorMake(0, 0, 0, 0)
         guard let encoder = commandBuffer.makeRenderCommandEncoder(descriptor: rpd) else {
             print("[MetalWarpRenderer] コマンドエンコーダ作成失敗")
-            return nil
+            return false
         }
         encoder.setRenderPipelineState(pipelineState)
         encoder.setVertexBuffer(vertexBuffer, offset: 0, index: 0)
         encoder.setFragmentTexture(srcTexture, index: 0)
-
-        // サンプラーを明示的にセット
         let samplerDescriptor = MTLSamplerDescriptor()
         samplerDescriptor.minFilter = .linear
         samplerDescriptor.magFilter = .linear
@@ -134,33 +169,43 @@ final class MetalWarpRenderer {
         samplerDescriptor.tAddressMode = .clampToEdge
         let sampler = device.makeSamplerState(descriptor: samplerDescriptor)
         encoder.setFragmentSamplerState(sampler, index: 0)
-
-        encoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: vertices.count / 4)
+        encoder.drawPrimitives(type: .triangle, vertexStart: 0, vertexCount: vertexCount)
         encoder.endEncoding()
         commandBuffer.commit()
         commandBuffer.waitUntilCompleted()
-        // テクスチャ→UIImage
+        return true
+    }
+
+    private func makeUIImage(from dstTexture: MTLTexture, width: Int, height: Int, image: UIImage) -> UIImage? {
         let bytesPerPixel = 4
         let bytesPerRow = width * bytesPerPixel
         let byteCount = bytesPerRow * height
-        var rawData = [UInt8](repeating: 0, count: byteCount)
+        let data = malloc(byteCount)
+        defer {
+            free(data)
+        }
         let region = MTLRegionMake2D(0, 0, width, height)
-        dstTexture.getBytes(&rawData, bytesPerRow: bytesPerRow, from: region, mipmapLevel: 0)
-
-        // 元画像と同じColorSpaceとBitmapInfoを使用
+        dstTexture.getBytes(data!, bytesPerRow: bytesPerRow, from: region, mipmapLevel: 0)
+        guard let cgImage = image.cgImage else { return nil }
         let colorSpace = cgImage.colorSpace ?? CGColorSpaceCreateDeviceRGB()
         let bitmapInfo = cgImage.bitmapInfo.rawValue
-
-        let ctx = CGContext(
-            data: &rawData,
-            width: width,
-            height: height,
-            bitsPerComponent: 8,
-            bytesPerRow: bytesPerRow,
-            space: colorSpace,
-            bitmapInfo: bitmapInfo
-        )
-        guard let outCG = ctx?.makeImage() else {
+        guard
+            let ctx = CGContext(
+                data: data,
+                width: width,
+                height: height,
+                bitsPerComponent: 8,
+                bytesPerRow: bytesPerRow,
+                space: colorSpace,
+                bitmapInfo: bitmapInfo,
+                releaseCallback: { _, _ in },
+                releaseInfo: nil
+            )
+        else {
+            print("[MetalWarpRenderer] CGContext作成失敗")
+            return nil
+        }
+        guard let outCG = ctx.makeImage() else {
             print("[MetalWarpRenderer] CGContext→CGImage変換失敗")
             return nil
         }

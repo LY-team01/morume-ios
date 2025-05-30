@@ -62,11 +62,19 @@ final class ImageWarpUtility {
         ctx.scaleBy(x: 1, y: -1)
         for tri in triangles {
             let dstIdx = [tri.point1, tri.point2, tri.point3].map { pt in
-                dstPoints.firstIndex(where: { abs($0.x - CGFloat(pt.x)) < 0.5 && abs($0.y - CGFloat(pt.y)) < 0.5 }) ?? 0
+                dstPoints.firstIndex(where: { abs($0.x - CGFloat(pt.x)) < 0.5 && abs($0.y - CGFloat(pt.y)) < 0.5 })
             }
-            let srcIdx = dstIdx
-            let srcTriCG = srcIdx.map { CGPoint(x: srcPoints[$0].x, y: image.size.height - srcPoints[$0].y) }
-            let dstTriCG = dstIdx.map { CGPoint(x: dstPoints[$0].x, y: image.size.height - dstPoints[$0].y) }
+
+            // すべてのインデックスが有効であることを確認
+            guard let idx1 = dstIdx[0], let idx2 = dstIdx[1], let idx3 = dstIdx[2] else {
+                print("[ImageWarpUtility] 三角形頂点のインデックスが見つかりません")
+                continue
+            }
+
+            let validIndices = [idx1, idx2, idx3]
+            let srcTriCG = validIndices.map { CGPoint(x: srcPoints[$0].x, y: image.size.height - srcPoints[$0].y) }
+            let dstTriCG = validIndices.map { CGPoint(x: dstPoints[$0].x, y: image.size.height - dstPoints[$0].y) }
+
             let path = UIBezierPath()
             path.move(to: dstTriCG[0])
             path.addLine(to: dstTriCG[1])

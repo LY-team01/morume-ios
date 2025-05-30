@@ -74,16 +74,14 @@ struct FilterEditView: View {
                 showInitialViewErrorToast = true
             }
             // 少し時間を置いて顔検出が完了するのを待ってからviewModelを更新する
-            try? await Task.sleep(for: .seconds(0.5))
+            try? await Task.sleep(for: .seconds(1))
             if viewModel.shouldBackToInitialView {
                 withAnimation {
                     showInitialViewErrorToast = true
                 }
                 dismiss()
             }
-            await MainActor.run {
-                viewModel.applyFilterParameters()
-            }
+            viewModel.applyFilterParameters()
         }
         .onChange(of: viewModel.filterParameters) {
             viewModel.applyFilterParameters()
