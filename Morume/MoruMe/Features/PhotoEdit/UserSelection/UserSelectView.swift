@@ -18,7 +18,7 @@ struct UserSelectView: View {
     }
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
                 MoruMeBackground()
                     .ignoresSafeArea()
