@@ -56,7 +56,7 @@ struct InitialFilterMakeView: View {
         .task {
             await viewModel.detectFaceLandmarks()
             // 少し時間を置いて顔検出が完了するのを待ってからviewModelを更新する
-            try? await Task.sleep(for: .seconds(0.5))
+            try? await Task.sleep(for: .seconds(0.1))
             if viewModel.shouldBackToInitialView {
                 withAnimation {
                     showInitialViewErrorToast = true
