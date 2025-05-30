@@ -71,7 +71,7 @@ struct FilterEditView: View {
             do {
                 try await viewModel.restoreParameters()
             } catch {
-                print("フィルターの復元に失敗しました: \(error)")
+                showInitialViewErrorToast = true
             }
             // 少し時間を置いて顔検出が完了するのを待ってからviewModelを更新する
             try? await Task.sleep(for: .seconds(0.5))
