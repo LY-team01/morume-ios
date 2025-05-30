@@ -81,9 +81,7 @@ struct FilterEditView: View {
                 }
                 dismiss()
             }
-            await MainActor.run {
-                viewModel.applyFilterParameters()
-            }
+            viewModel.applyFilterParameters()
         }
         .onChange(of: viewModel.filterParameters) {
             viewModel.applyFilterParameters()
