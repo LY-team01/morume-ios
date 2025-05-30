@@ -64,14 +64,14 @@ final class FilterEditViewModel {
         let scales = filterParameters.toScale()
 
         do {
-            let transormedImage = try photoEditRepository.applyTransformations(
+            let transformedImage = try photoEditRepository.applyTransformations(
                 faceIndex: 0,
                 eyeScale: CGFloat(scales["eye"]!),
                 noseScale: CGFloat(scales["nose"]!),
                 mouthScale: CGFloat(scales["mouth"]!)
             )
             if let faceRegion = photoEditRepository.detectedFaceRegions.first {
-                editPhoto = transormedImage.cropped(to: faceRegion)
+                editPhoto = transformedImage.cropped(to: faceRegion)
             }
         } catch {
             print("変形の適用に失敗しました: \(error)")
