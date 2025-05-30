@@ -145,7 +145,7 @@ struct InitialFilterMakeView: View {
     }
 }
 
-private struct WithUnderBarTextFieldStyle: TextFieldStyle {
+struct WithUnderBarTextFieldStyle: TextFieldStyle {
     func _body(configuration: TextField<Self._Label>) -> some View {
         VStack(spacing: 3) {
             configuration
