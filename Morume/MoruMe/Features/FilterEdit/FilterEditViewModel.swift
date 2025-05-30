@@ -20,6 +20,7 @@ final class FilterEditViewModel {
     var filterParameters = FilterParameters()
 
     var isProcessing = false
+    var showSuccessToast = false
     var showErrorToast = false
     var showResetAlert = false
     var shouldBackToInitialView: Bool {
