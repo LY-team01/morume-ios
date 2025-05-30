@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		171CA1282DE932B600740CAB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 171CA1272DE932B600740CAB /* GoogleService-Info.plist */; };
 		176C8E472DE1D91C00DADCAB /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 176C8E462DE1D91C00DADCAB /* FirebaseAuth */; };
 		176C8E492DE1D91C00DADCAB /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 176C8E482DE1D91C00DADCAB /* FirebaseCore */; };
 		1790CBE92DE2F35C00D72EB9 /* DelaunayTriangulation in Frameworks */ = {isa = PBXBuildFile; productRef = 1790CBE82DE2F35C00D72EB9 /* DelaunayTriangulation */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		171CA1272DE932B600740CAB /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		17A95E502DD58E750096EDDE /* MoruMe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MoruMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DD47B77BB99035E0D36D2D0 /* Pods-MoruMe.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MoruMe.release.xcconfig"; path = "Target Support Files/Pods-MoruMe/Pods-MoruMe.release.xcconfig"; sourceTree = "<group>"; };
 		53ECC382A56AE3887025E0D1 /* Pods-MoruMe.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MoruMe.debug.xcconfig"; path = "Target Support Files/Pods-MoruMe/Pods-MoruMe.debug.xcconfig"; sourceTree = "<group>"; };
@@ -64,6 +66,7 @@
 				17A95E512DD58E750096EDDE /* Products */,
 				A0DB07B420A6E484B76C5059 /* Pods */,
 				16E168CE7A8F2018778CBE90 /* Frameworks */,
+				171CA1272DE932B600740CAB /* GoogleService-Info.plist */,
 			);
 			sourceTree = "<group>";
 		};
@@ -163,6 +166,7 @@
 			files = (
 				C18F86CF2DE8429000A05F81 /* Settings.bundle in Resources */,
 				C18F86D12DE842EB00A05F81 /* license_plist.yml in Resources */,
+				171CA1282DE932B600740CAB /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
