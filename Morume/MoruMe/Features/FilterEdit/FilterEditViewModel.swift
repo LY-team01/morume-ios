@@ -13,6 +13,7 @@ import UIKit
 final class FilterEditViewModel {
     private let photoEditRepository: PhotoEditRepository
     private let userRepository: UserRepository
+    private let filterRepository: FilterRepository
     private let originalPhoto: UIImage
 
     var editPhoto: UIImage?
@@ -30,6 +31,7 @@ final class FilterEditViewModel {
     init(originalImage: UIImage) {
         self.originalPhoto = originalImage
         self.photoEditRepository = PhotoEditRepository(originalPhoto: originalImage)
+        self.filterRepository = MoruMeAPIFilterRepository()
         self.userRepository = MoruMeAPIUserRepository()
     }
 
@@ -88,5 +90,16 @@ final class FilterEditViewModel {
             avatarURL: nil,
             filterParameters: filterParameters
         )
+    }
+
+    func restoreParameters() async throws {
+        isProcessing = true
+        defer { isProcessing = false }
+
+        let me = try await userRepository.fetchMyUser()
+        self.nickname = me.nickname
+        if let filter = me.filter {
+            self.filterParameters = filter
+        }
     }
 }

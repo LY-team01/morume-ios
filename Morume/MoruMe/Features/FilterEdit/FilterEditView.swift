@@ -68,6 +68,11 @@ struct FilterEditView: View {
         }
         .task {
             await viewModel.detectFaceLandmarks()
+            do {
+                try await viewModel.restoreParameters()
+            } catch {
+                print("フィルターの復元に失敗しました: \(error)")
+            }
             // 少し時間を置いて顔検出が完了するのを待ってからviewModelを更新する
             try? await Task.sleep(for: .seconds(0.5))
             if viewModel.shouldBackToInitialView {
