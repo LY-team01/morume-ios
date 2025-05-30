@@ -33,7 +33,7 @@ struct ContentView: View {
                         .renderingMode(.template)
                     Text("HOME")
                 }
-            FilterEditView()
+            ImageUploadView()
                 .tabItem {
                     Image(.filterIcon)
                         .renderingMode(.template)
