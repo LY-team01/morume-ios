@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct HomeView: View {
+    @Environment(ToastManager.self) private var toastManager
     @State private var viewModel = HomeViewModel()
-    @State private var isNavigationActive = false
 
     var body: some View {
         NavigationStack {
@@ -48,31 +48,24 @@ struct HomeView: View {
                     Spacer()
                 }
                 .onChange(of: viewModel.selectedPhoto) {
-                    isNavigationActive = viewModel.selectedPhoto != nil
+                    if viewModel.selectedPhoto != nil {
+                        Task {
+                            await viewModel.validateSelectedPhoto()
+                        }
+                    }
                 }
-                .navigationDestination(isPresented: $isNavigationActive) {
+                .navigationDestination(isPresented: $viewModel.shouldNavigate) {
                     if let photo = viewModel.selectedPhoto {
                         PhotoEditView(photo: photo, resultPhoto: $viewModel.resultPhoto)
                     }
                 }
             }
         }
-        .modifier(
-            ToastOverlay(
-                showToast: $viewModel.showErrorToast,
-                icon: .errorIcon,
-                message: "エラーが発生しました",
-                type: .error
-            )
-        )
-        .modifier(
-            ToastOverlay(
-                showToast: $viewModel.showSuccessToast,
-                icon: .photoSavedIcon,
-                message: "写真を保存しました",
-                type: .success
-            )
-        )
+        .onChange(of: viewModel.toastEvent) {
+            guard let event = viewModel.toastEvent else { return }
+            toastManager.show(icon: event.icon, message: event.message, type: event.type)
+            viewModel.toastEvent = nil
+        }
     }
 }
 

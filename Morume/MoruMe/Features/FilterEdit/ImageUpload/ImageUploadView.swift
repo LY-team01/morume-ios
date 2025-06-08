@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct ImageUploadView: View {
+    @Environment(ToastManager.self) private var toastManager
     @State private var viewModel = ImageUploadViewModel()
-    @State private var isNavigationActive = false
 
     var body: some View {
         NavigationStack {
@@ -26,17 +26,27 @@ struct ImageUploadView: View {
                     .padding(.horizontal, 18)
                 }
                 .onChange(of: viewModel.selectedPhoto) {
-                    isNavigationActive = viewModel.selectedPhoto != nil
+                    if viewModel.selectedPhoto != nil {
+                        Task {
+                            await viewModel.validateSelectedPhoto()
+                        }
+                    }
                 }
-                .navigationDestination(isPresented: $isNavigationActive) {
+                .navigationDestination(isPresented: $viewModel.shouldNavigate) {
                     if let photo = viewModel.selectedPhoto {
-                        FilterEditView(photo: photo, showInitialViewErrorToast: $viewModel.showErrorToast)
+                        FilterEditView(photo: photo)
                     }
                 }
             }
         }
-        .modifier(
-            ToastOverlay(showToast: $viewModel.showErrorToast, icon: .errorIcon, message: "エラーが発生しました", type: .error)
-        )
+        .onChange(of: viewModel.toastEvent) {
+            guard let event = viewModel.toastEvent else { return }
+            toastManager.show(icon: event.icon, message: event.message, type: event.type)
+            viewModel.toastEvent = nil
+        }
     }
+}
+
+#Preview {
+    ImageUploadView()
 }

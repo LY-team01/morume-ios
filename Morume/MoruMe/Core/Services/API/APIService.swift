@@ -17,13 +17,33 @@ enum HTTPMethod: String {
 }
 
 /// APIエラータイプを表す列挙型
-enum APIError: Error {
+enum APIError: Error, LocalizedError {
     case invalidURL
     case noData
     case decodingError
     case networkError(Error)
     case serverError(Int)
     case authenticationError
+    case invalidResponse
+
+    var errorDescription: String? {
+        switch self {
+        case .invalidURL:
+            return "無効なURLです"
+        case .noData:
+            return "データが見つかりません"
+        case .decodingError:
+            return "データの解析に失敗しました"
+        case .networkError:
+            return "ネットワークエラーが発生しました"
+        case .serverError(let statusCode):
+            return "サーバーエラーが発生しました (コード: \(statusCode))"
+        case .authenticationError:
+            return "認証に失敗しました"
+        case .invalidResponse:
+            return "無効なレスポンス形式です"
+        }
+    }
 }
 
 // MARK: - APIService

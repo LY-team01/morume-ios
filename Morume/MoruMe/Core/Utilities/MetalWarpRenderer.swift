@@ -96,7 +96,7 @@ final class MetalWarpRenderer {
     private func makeTexture(from cgImage: CGImage) -> MTLTexture? {
         let options: [MTKTextureLoader.Option: Any] = [
             .SRGB: false,
-            .generateMipmaps: false,
+            .generateMipmaps: false
         ]
         return try? textureLoader.newTexture(cgImage: cgImage, options: options)
     }

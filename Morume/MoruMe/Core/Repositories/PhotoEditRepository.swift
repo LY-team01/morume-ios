@@ -33,11 +33,7 @@ final class PhotoEditRepository {
         let faceRegions = try faceDetectionService.detectFaceRegions(in: originalPhoto)
 
         if faceRegions.isEmpty {
-            throw NSError(
-                domain: "FaceProcessingRepository",
-                code: -1,
-                userInfo: [NSLocalizedDescriptionKey: "顔が検出されませんでした"]
-            )
+            throw FaceDetectionError.noFaceDetected
         }
 
         let (regions, meshes) = try await processFaceRegions(faceRegions)
@@ -92,11 +88,7 @@ final class PhotoEditRepository {
         mouthScale: CGFloat
     ) throws -> UIImage {
         guard faceIndex >= 0, faceIndex < detectedFaceMeshes.count else {
-            throw NSError(
-                domain: "PhotoEditRepository",
-                code: -1,
-                userInfo: [NSLocalizedDescriptionKey: "無効な顔インデックス"]
-            )
+            throw ValidationError.parameterOutOfRange
         }
         // 元の点をコピー
         let originalPoints = detectedFaceMeshes[faceIndex].points
@@ -152,11 +144,7 @@ final class PhotoEditRepository {
                 triangles: triangles
             )
         else {
-            throw NSError(
-                domain: "PhotoEditRepository",
-                code: -1,
-                userInfo: [NSLocalizedDescriptionKey: "メッシュワーピングに失敗しました"]
-            )
+            throw ImageProcessingError.meshWarpingFailed
         }
 
         return warpedImage
@@ -224,11 +212,7 @@ final class PhotoEditRepository {
                 triangles: triangles
             )
         else {
-            throw NSError(
-                domain: "PhotoEditRepository",
-                code: -1,
-                userInfo: [NSLocalizedDescriptionKey: "メッシュワーピングに失敗しました"]
-            )
+            throw ImageProcessingError.meshWarpingFailed
         }
 
         return warpedImage

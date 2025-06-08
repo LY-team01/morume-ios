@@ -20,7 +20,7 @@ final class InitialFilterMakeViewModel {
     var filterParameters = FilterParameters()
 
     var isProcessing = false
-    var showErrorToast = false
+    var toastEvent: ToastState?
     var showResetAlert = false
     var shouldBackToInitialView: Bool {
         photoEditRepository.detectedFaceMeshes.isEmpty
@@ -49,6 +49,8 @@ final class InitialFilterMakeViewModel {
             }
             print("検出された顔の数： \(photoEditRepository.detectedFaceMeshes.count)")
         } catch {
+            let message = (error as? LocalizedError)?.errorDescription ?? "エラーが発生しました"
+            toastEvent = ToastState(icon: .errorIcon, message: message, type: .error)
             print(error)
         }
     }
@@ -72,6 +74,8 @@ final class InitialFilterMakeViewModel {
                 editPhoto = transormedImage.cropped(to: faceRegion)
             }
         } catch {
+            let message = (error as? LocalizedError)?.errorDescription ?? "エラーが発生しました"
+            toastEvent = ToastState(icon: .errorIcon, message: message, type: .error)
             print("変形の適用に失敗しました: \(error)")
         }
     }

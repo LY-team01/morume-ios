@@ -21,8 +21,7 @@ final class FilterEditViewModel {
     var filterParameters = FilterParameters()
 
     var isProcessing = false
-    var showSuccessToast = false
-    var showErrorToast = false
+    var toastEvent: ToastState?
     var showResetAlert = false
     var shouldBackToInitialView: Bool {
         photoEditRepository.detectedFaceMeshes.isEmpty
@@ -41,7 +40,6 @@ final class FilterEditViewModel {
         defer {
             isProcessing = false
         }
-
         do {
             try await photoEditRepository.detectFaceAndLandmarks()
             if let faceRegion = photoEditRepository.detectedFaceRegions.first {
@@ -51,6 +49,8 @@ final class FilterEditViewModel {
             }
             print("検出された顔の数： \(photoEditRepository.detectedFaceMeshes.count)")
         } catch {
+            let message = (error as? LocalizedError)?.errorDescription ?? "エラーが発生しました"
+            toastEvent = ToastState(icon: .errorIcon, message: message, type: .error)
             print(error)
         }
     }
@@ -74,6 +74,8 @@ final class FilterEditViewModel {
                 editPhoto = transformedImage.cropped(to: faceRegion)
             }
         } catch {
+            let message = (error as? LocalizedError)?.errorDescription ?? "エラーが発生しました"
+            toastEvent = ToastState(icon: .errorIcon, message: message, type: .error)
             print("変形の適用に失敗しました: \(error)")
         }
     }
