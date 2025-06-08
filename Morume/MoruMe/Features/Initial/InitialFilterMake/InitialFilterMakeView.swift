@@ -96,7 +96,8 @@ struct InitialFilterMakeView: View {
                             try await viewModel.createFilter()
                             viewModel.goToNextView = true
                         } catch {
-                            viewModel.toastEvent = ToastState(icon: .errorIcon, message: "エラーが発生しました", type: .error)
+                            let message = (error as? LocalizedError)?.errorDescription ?? "エラーが発生しました"
+                            viewModel.toastEvent = ToastState(icon: .errorIcon, message: message, type: .error)
                         }
                     }
                 }

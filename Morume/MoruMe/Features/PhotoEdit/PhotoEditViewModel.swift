@@ -67,6 +67,9 @@ final class PhotoEditViewModel {
             // 顔検出完了フラグを設定
             hasFaceDetectionCompleted = true
         } catch {
+            // エラーログ出力（UIには表示しない - ユーザーが選択する画面なので）
+            let message = (error as? LocalizedError)?.errorDescription ?? "顔検出でエラーが発生しました"
+            print("顔検出エラー: \(message)")
             print(error)
         }
     }
@@ -97,7 +100,9 @@ final class PhotoEditViewModel {
                     mouthScale: CGFloat(scales["mouth"]!)
                 )
             } catch {
-                print("変形の適用に失敗しました: \(error)")
+                let message = (error as? LocalizedError)?.errorDescription ?? "変形の適用でエラーが発生しました"
+                print("変形の適用に失敗しました: \(message)")
+                print(error)
             }
         }
 

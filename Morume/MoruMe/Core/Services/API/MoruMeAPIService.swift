@@ -8,6 +8,9 @@
 import Foundation
 import OSLog
 
+// 必要なプロトコルとエラー型をimport
+// APIService.swiftからプロトコルとエラー型が利用できます
+
 final class MoruMeAPIService: APIService {
     private let authService: AuthService
     private let session: URLSession
@@ -111,7 +114,7 @@ final class MoruMeAPIService: APIService {
 
             guard let httpResponse = response as? HTTPURLResponse else {
                 logger.error("❌ 無効なレスポンス形式")
-                throw APIError.networkError(NSError(domain: "Invalid response", code: 0, userInfo: nil))
+                throw APIError.invalidResponse
             }
 
             // レスポンス情報のログ出力

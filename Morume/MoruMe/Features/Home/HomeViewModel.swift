@@ -18,19 +18,22 @@ final class HomeViewModel {
     var toastEvent: ToastState?
 
     func saveResultPhoto() async {
-        guard let photo = resultPhoto else {
-            toastEvent = ToastState(icon: .errorIcon, message: "エラーが発生しました", type: .error)
-            return
-        }
+        do {
+            guard let photo = resultPhoto else {
+                throw PhotoLibraryError.imageSelectionFailed
+            }
 
-        let status = await PHPhotoLibrary.requestAuthorization(for: .addOnly)
-        guard status == .authorized || status == .limited else {
-            toastEvent = ToastState(icon: .errorIcon, message: "エラーが発生しました", type: .error)
-            return
-        }
+            let status = await PHPhotoLibrary.requestAuthorization(for: .addOnly)
+            guard status == .authorized || status == .limited else {
+                throw PhotoLibraryError.accessDenied
+            }
 
-        UIImageWriteToSavedPhotosAlbum(photo, nil, nil, nil)
-        toastEvent = ToastState(icon: .photoSavedIcon, message: "写真を保存しました", type: .success)
+            UIImageWriteToSavedPhotosAlbum(photo, nil, nil, nil)
+            toastEvent = ToastState(icon: .photoSavedIcon, message: "写真を保存しました", type: .success)
+        } catch {
+            let message = (error as? LocalizedError)?.errorDescription ?? "エラーが発生しました"
+            toastEvent = ToastState(icon: .errorIcon, message: message, type: .error)
+        }
     }
 
     func resetState() {

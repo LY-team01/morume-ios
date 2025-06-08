@@ -12,17 +12,17 @@ final class VisionFaceDetectionService: FaceDetectionService {
     /// Visionフレームワークで顔領域を検出
     func detectFaceRegions(in image: UIImage) throws -> [CGRect] {
         guard let cgImage = image.cgImage else {
-            throw NSError(
-                domain: "FaceDetectionService",
-                code: -1,
-                userInfo: [NSLocalizedDescriptionKey: "CGImageの取得に失敗"]
-            )
+            throw FaceDetectionError.cgImageConversionFailed
         }
 
         let faceDetectionRequest = VNDetectFaceRectanglesRequest()
         let imageRequestHandler = VNImageRequestHandler(cgImage: cgImage, options: [:])
 
-        try imageRequestHandler.perform([faceDetectionRequest])
+        do {
+            try imageRequestHandler.perform([faceDetectionRequest])
+        } catch {
+            throw FaceDetectionError.visionFrameworkError
+        }
 
         guard let observations = faceDetectionRequest.results else {
             return []

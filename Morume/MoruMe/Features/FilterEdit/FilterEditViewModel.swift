@@ -49,7 +49,8 @@ final class FilterEditViewModel {
             }
             print("検出された顔の数： \(photoEditRepository.detectedFaceMeshes.count)")
         } catch {
-            toastEvent = ToastState(icon: .errorIcon, message: "エラーが発生しました", type: .error)
+            let message = (error as? LocalizedError)?.errorDescription ?? "エラーが発生しました"
+            toastEvent = ToastState(icon: .errorIcon, message: message, type: .error)
             print(error)
         }
     }
@@ -73,6 +74,8 @@ final class FilterEditViewModel {
                 editPhoto = transformedImage.cropped(to: faceRegion)
             }
         } catch {
+            let message = (error as? LocalizedError)?.errorDescription ?? "エラーが発生しました"
+            toastEvent = ToastState(icon: .errorIcon, message: message, type: .error)
             print("変形の適用に失敗しました: \(error)")
         }
     }
