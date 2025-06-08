@@ -46,9 +46,6 @@ struct ContentView: View {
                 toastManager.show(icon: .checkmarkCircleIcon, message: "フィルターを作成しました", type: .success)
             }
         }
-        .modifier(
-            ToastOverlay()
-        )
     }
 }
 

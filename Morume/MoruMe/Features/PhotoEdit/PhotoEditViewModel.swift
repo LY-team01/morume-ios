@@ -28,6 +28,7 @@ final class PhotoEditViewModel {
     var showResetAlert = false
     var showOriginalPhoto = false
     var hasFaceDetectionCompleted = false
+    var shouldNavigateBack = false
 
     init(originalImage: UIImage) {
         self.originalPhoto = originalImage
@@ -37,9 +38,9 @@ final class PhotoEditViewModel {
         self.userRepository = MoruMeAPIUserRepository()
     }
 
-    func detectFaceLandmarks() async {
+    func detectFaceLandmarks() async -> Bool {
         // 既に顔検出が完了している場合は再実行しない
-        guard !hasFaceDetectionCompleted else { return }
+        guard !hasFaceDetectionCompleted else { return detectedFaces.count > 0 }
 
         isProcessing = true
         defer {
@@ -66,11 +67,15 @@ final class PhotoEditViewModel {
 
             // 顔検出完了フラグを設定
             hasFaceDetectionCompleted = true
+
+            // 顔が検出されたかどうかを返す
+            return detectedFaces.count > 0
         } catch {
             // エラーログ出力（UIには表示しない - ユーザーが選択する画面なので）
             let message = (error as? LocalizedError)?.errorDescription ?? "顔検出でエラーが発生しました"
             print("顔検出エラー: \(message)")
             print(error)
+            return false
         }
     }
 

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct PhotoEditView: View {
     @Environment(\.dismiss) private var dismiss
+    @Environment(ToastManager.self) private var toastManager
     @Binding var resultPhoto: UIImage?
     @State private var viewModel: PhotoEditViewModel
 
@@ -55,7 +56,8 @@ struct PhotoEditView: View {
         }
         .toolbar(.hidden, for: .tabBar)
         .task {
-            await viewModel.detectFaceLandmarks()
+            let faceDetected = await viewModel.detectFaceLandmarks()
+            // 顔認識は画面遷移前に行うため、ここでの全画面戻り処理は不要
             viewModel.applyFilterParameters()
         }
     }

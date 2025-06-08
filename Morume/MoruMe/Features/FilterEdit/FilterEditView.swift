@@ -61,14 +61,7 @@ struct FilterEditView: View {
             } catch {
                 // Handle error if needed
             }
-            // 少し時間を置いて顔検出が完了するのを待ってからviewModelを更新する
-            try? await Task.sleep(for: .seconds(1))
-            if viewModel.shouldBackToInitialView {
-                withAnimation {
-                    // Handle navigation back to initial view if needed
-                }
-                dismiss()
-            }
+            // 顔認識は画面遷移前に行うため、ここでの全画面戻り処理は不要
             viewModel.applyFilterParameters()
         }
         .onChange(of: viewModel.filterParameters) {
@@ -105,8 +98,7 @@ struct FilterEditView: View {
                     try await viewModel.createFilter()
                     viewModel.toastEvent = ToastState(icon: .photoSavedIcon, message: "フィルターを保存しました", type: .success)
                 } catch {
-                    let message = (error as? LocalizedError)?.errorDescription ?? "エラーが発生しました"
-                    viewModel.toastEvent = ToastState(icon: .errorIcon, message: message, type: .error)
+                    viewModel.toastEvent = ToastState(icon: .errorIcon, message: "エラーが発生しました", type: .error)
                 }
             }
         } label: {

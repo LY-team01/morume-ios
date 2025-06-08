@@ -6,10 +6,36 @@
 //
 
 import Observation
+import SwiftUI
 import UIKit
 
 @Observable
+@MainActor
 final class InitialViewModel {
+    private let faceDetectionValidator = FaceDetectionValidator()
+
     var selectedPhoto: UIImage?
     var toastEvent: ToastState?
+    var shouldNavigate = false
+
+    func validateSelectedPhoto() async {
+        guard let photo = selectedPhoto else { return }
+
+        // 顔認識チェックを実行
+        let hasDetectedFace = await faceDetectionValidator.validateFaceDetection(in: photo)
+
+        if !hasDetectedFace {
+            // 顔が検出されなかった場合はエラーを表示し、写真選択をリセット
+            toastEvent = ToastState(
+                icon: .errorIcon,
+                message: "顔を検出できませんでした。別の写真を選択してください。",
+                type: .error
+            )
+            selectedPhoto = nil
+            shouldNavigate = false
+        } else {
+            // 顔が検出された場合は画面遷移フラグをON
+            shouldNavigate = true
+        }
+    }
 }

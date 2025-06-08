@@ -35,6 +35,9 @@ struct RootView: View {
                 await viewModel.checkInitialState()
             }
         }
+        .modifier(
+            ToastOverlay()
+        )
     }
 }
 

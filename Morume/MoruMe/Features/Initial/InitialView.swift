@@ -10,7 +10,6 @@ import SwiftUI
 struct InitialView: View {
     @Environment(ToastManager.self) private var toastManager
     @State private var viewModel = InitialViewModel()
-    @State private var isNavigationActive = false
 
     var body: some View {
         NavigationStack {
@@ -34,9 +33,13 @@ struct InitialView: View {
                     Spacer()
                 }
                 .onChange(of: viewModel.selectedPhoto) {
-                    isNavigationActive = viewModel.selectedPhoto != nil
+                    if viewModel.selectedPhoto != nil {
+                        Task {
+                            await viewModel.validateSelectedPhoto()
+                        }
+                    }
                 }
-                .navigationDestination(isPresented: $isNavigationActive) {
+                .navigationDestination(isPresented: $viewModel.shouldNavigate) {
                     if let photo = viewModel.selectedPhoto {
                         InitialFilterMakeView(photo: photo)
                     }
