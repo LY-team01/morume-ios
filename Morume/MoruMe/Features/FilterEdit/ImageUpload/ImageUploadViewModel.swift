@@ -11,5 +11,5 @@ import UIKit
 @Observable
 final class ImageUploadViewModel {
     var selectedPhoto: UIImage?
-    var showErrorToast = false
+    var toastEvent: ToastState?
 }

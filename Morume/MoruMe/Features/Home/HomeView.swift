@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct HomeView: View {
+    @Environment(ToastManager.self) private var toastManager
     @State private var viewModel = HomeViewModel()
     @State private var isNavigationActive = false
 
@@ -57,22 +58,11 @@ struct HomeView: View {
                 }
             }
         }
-        .modifier(
-            ToastOverlay(
-                showToast: $viewModel.showErrorToast,
-                icon: .errorIcon,
-                message: "エラーが発生しました",
-                type: .error
-            )
-        )
-        .modifier(
-            ToastOverlay(
-                showToast: $viewModel.showSuccessToast,
-                icon: .photoSavedIcon,
-                message: "写真を保存しました",
-                type: .success
-            )
-        )
+        .onChange(of: viewModel.toastEvent) {
+            guard let event = viewModel.toastEvent else { return }
+            toastManager.show(icon: event.icon, message: event.message, type: event.type)
+            viewModel.toastEvent = nil
+        }
     }
 }
 

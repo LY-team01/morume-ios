@@ -11,6 +11,7 @@ import SwiftUI
 enum ToastType {
     case success
     case error
+
     var backgroundColor: Color {
         switch self {
         case .success:
@@ -25,11 +26,13 @@ struct Toast: View {
     let icon: ImageResource
     let message: String
     let type: ToastType
+
     init(icon: ImageResource, message: String, type: ToastType) {
         self.icon = icon
         self.message = message
         self.type = type
     }
+
     var body: some View {
         HStack(spacing: 8) {
             Image(icon)
@@ -49,7 +52,7 @@ struct Toast: View {
         .shadow(color: Color.black.opacity(0.15), radius: 12, x: 0, y: 4)
     }
 }
-// プレビュー用
+
 #Preview {
     VStack(spacing: 20) {
         Toast(icon: .checkmarkCircleIcon, message: "フィルターを作成しました", type: .success)

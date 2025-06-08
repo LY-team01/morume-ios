@@ -8,23 +8,20 @@
 import SwiftUI
 
 struct ToastOverlay: ViewModifier {
-    @Binding var showToast: Bool
-    let icon: ImageResource
-    let message: String
-    let type: ToastType
+    @Environment(ToastManager.self) private var toastManager
 
     func body(content: Content) -> some View {
         ZStack {
             content
             VStack {
-                if showToast {
-                    Toast(icon: icon, message: message, type: type)
+                if let toastState = toastManager.toastState {
+                    Toast(icon: toastState.icon, message: toastState.message, type: toastState.type)
                         .transition(.opacity.combined(with: .move(edge: .top)))
-                        .task(id: showToast) {
+                        .task(id: toastState.id) {
                             try? await Task.sleep(for: .seconds(3))
                             await MainActor.run {
                                 withAnimation {
-                                    showToast = false
+                                    toastManager.dismiss()
                                 }
                             }
                         }

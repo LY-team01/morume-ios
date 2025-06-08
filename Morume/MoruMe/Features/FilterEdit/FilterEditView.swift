@@ -8,13 +8,12 @@
 import SwiftUI
 
 struct FilterEditView: View {
+    @Environment(ToastManager.self) private var toastManager
     @Environment(\.dismiss) private var dismiss
     @FocusState var textFieldFocus: Bool
-    @Binding var showInitialViewErrorToast: Bool
     @State private var viewModel: FilterEditViewModel
 
-    init(photo: UIImage, showInitialViewErrorToast: Binding<Bool>) {
-        self._showInitialViewErrorToast = showInitialViewErrorToast
+    init(photo: UIImage) {
         self.viewModel = FilterEditViewModel(originalImage: photo)
     }
 
@@ -35,22 +34,11 @@ struct FilterEditView: View {
             }
         }
         .ignoresSafeArea(.keyboard)
-        .modifier(
-            ToastOverlay(
-                showToast: $viewModel.showSuccessToast,
-                icon: .checkmarkCircleIcon,
-                message: "フィルターを保存しました",
-                type: .success
-            )
-        )
-        .modifier(
-            ToastOverlay(
-                showToast: $viewModel.showErrorToast,
-                icon: .errorIcon,
-                message: "エラーが発生しました",
-                type: .error
-            )
-        )
+        .onChange(of: viewModel.toastEvent) {
+            guard let event = viewModel.toastEvent else { return }
+            toastManager.show(icon: event.icon, message: event.message, type: event.type)
+            viewModel.toastEvent = nil
+        }
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarBackButtonHidden()
         .toolbarRole(.editor)
@@ -71,13 +59,13 @@ struct FilterEditView: View {
             do {
                 try await viewModel.restoreParameters()
             } catch {
-                showInitialViewErrorToast = true
+                // Handle error if needed
             }
             // 少し時間を置いて顔検出が完了するのを待ってからviewModelを更新する
             try? await Task.sleep(for: .seconds(1))
             if viewModel.shouldBackToInitialView {
                 withAnimation {
-                    showInitialViewErrorToast = true
+                    // Handle navigation back to initial view if needed
                 }
                 dismiss()
             }
@@ -115,11 +103,9 @@ struct FilterEditView: View {
             Task {
                 do {
                     try await viewModel.createFilter()
-                    viewModel.showSuccessToast = true
+                    viewModel.toastEvent = ToastState(icon: .photoSavedIcon, message: "フィルターを保存しました", type: .success)
                 } catch {
-                    withAnimation {
-                        viewModel.showErrorToast = true
-                    }
+                    viewModel.toastEvent = ToastState(icon: .errorIcon, message: "エラーが発生しました", type: .error)
                 }
             }
         } label: {
@@ -168,5 +154,5 @@ struct FilterEditView: View {
 }
 
 #Preview {
-    FilterEditView(photo: UIImage(resource: .sampleSelfie), showInitialViewErrorToast: .constant(false))
+    FilterEditView(photo: UIImage(resource: .sampleSelfie))
 }

@@ -8,10 +8,11 @@
 import SwiftUI
 
 struct LoadingView: View {
+    @Environment(ToastManager.self) private var toastManager
     let isError: Bool
     let onRetry: (() -> Void)?
 
-    @State private var showErrorToast = false
+    @State private var didShowError = false
 
     init(isError: Bool = false, onRetry: (() -> Void)? = nil) {
         self.isError = isError
@@ -59,22 +60,15 @@ struct LoadingView: View {
                 }
             }
         }
-        .modifier(
-            ToastOverlay(
-                showToast: $showErrorToast,
-                icon: .errorIcon,
-                message: "ネットワークエラーが発生しました",
-                type: .error
-            )
-        )
         .onAppear {
-            if isError {
-                showErrorToast = true
+            if isError && !didShowError {
+                toastManager.show(icon: .errorIcon, message: "ネットワークエラーが発生しました", type: .error)
+                didShowError = true
             }
         }
-        .onChange(of: isError) { _, newValue in
-            if newValue {
-                showErrorToast = true
+        .onChange(of: isError) {
+            if isError {
+                toastManager.show(icon: .errorIcon, message: "ネットワークエラーが発生しました", type: .error)
             }
         }
     }

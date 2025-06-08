@@ -20,7 +20,7 @@ final class InitialFilterMakeViewModel {
     var filterParameters = FilterParameters()
 
     var isProcessing = false
-    var showErrorToast = false
+    var toastEvent: ToastState?
     var showResetAlert = false
     var shouldBackToInitialView: Bool {
         photoEditRepository.detectedFaceMeshes.isEmpty
@@ -49,6 +49,7 @@ final class InitialFilterMakeViewModel {
             }
             print("検出された顔の数： \(photoEditRepository.detectedFaceMeshes.count)")
         } catch {
+            toastEvent = ToastState(icon: .errorIcon, message: "エラーが発生しました", type: .error)
             print(error)
         }
     }

@@ -23,10 +23,12 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 @main
 struct MoruMeApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    @State private var toastManager = ToastManager()
 
     var body: some Scene {
         WindowGroup {
             RootView()
+                .environment(toastManager)
         }
     }
 }

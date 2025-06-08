@@ -9,6 +9,7 @@ import SwiftUI
 import UIKit
 
 struct ContentView: View {
+    @Environment(ToastManager.self) private var toastManager
     @Binding var hasFilterSaveSucceeded: Bool
 
     init(hasFilterSaveSucceeded: Binding<Bool> = .constant(false)) {
@@ -40,13 +41,13 @@ struct ContentView: View {
                     Text("FILTER")
                 }
         }
+        .onChange(of: hasFilterSaveSucceeded) {
+            if hasFilterSaveSucceeded {
+                toastManager.show(icon: .checkmarkCircleIcon, message: "フィルターを作成しました", type: .success)
+            }
+        }
         .modifier(
-            ToastOverlay(
-                showToast: $hasFilterSaveSucceeded,
-                icon: .checkmarkCircleIcon,
-                message: "フィルターを作成しました",
-                type: .success
-            )
+            ToastOverlay()
         )
     }
 }

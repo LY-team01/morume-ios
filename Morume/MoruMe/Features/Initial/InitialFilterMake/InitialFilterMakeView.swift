@@ -8,13 +8,12 @@
 import SwiftUI
 
 struct InitialFilterMakeView: View {
+    @Environment(ToastManager.self) private var toastManager
     @Environment(\.dismiss) private var dismiss
     @FocusState var textFieldFocus: Bool
-    @Binding var showInitialViewErrorToast: Bool
     @State private var viewModel: InitialFilterMakeViewModel
 
-    init(photo: UIImage, showInitialViewErrorToast: Binding<Bool>) {
-        self._showInitialViewErrorToast = showInitialViewErrorToast
+    init(photo: UIImage) {
         self.viewModel = InitialFilterMakeViewModel(originalImage: photo)
     }
     var body: some View {
@@ -35,9 +34,11 @@ struct InitialFilterMakeView: View {
             }
         }
         .ignoresSafeArea(.keyboard)
-        .modifier(
-            ToastOverlay(showToast: $viewModel.showErrorToast, icon: .errorIcon, message: "エラーが発生しました", type: .error)
-        )
+        .onChange(of: viewModel.toastEvent) {
+            guard let event = viewModel.toastEvent else { return }
+            toastManager.show(icon: event.icon, message: event.message, type: event.type)
+            viewModel.toastEvent = nil
+        }
         .fullScreenCover(isPresented: $viewModel.goToNextView) {
             ContentView()
         }
@@ -59,14 +60,9 @@ struct InitialFilterMakeView: View {
             try? await Task.sleep(for: .seconds(1))
             if viewModel.shouldBackToInitialView {
                 withAnimation {
-                    showInitialViewErrorToast = true
+                    dismiss()
                 }
-                dismiss()
             }
-            viewModel.applyFilterParameters()
-        }
-        .onChange(of: viewModel.filterParameters) {
-            viewModel.applyFilterParameters()
         }
     }
 
@@ -100,9 +96,7 @@ struct InitialFilterMakeView: View {
                             try await viewModel.createFilter()
                             viewModel.goToNextView = true
                         } catch {
-                            withAnimation {
-                                viewModel.showErrorToast = true
-                            }
+                            viewModel.toastEvent = ToastState(icon: .errorIcon, message: "エラーが発生しました", type: .error)
                         }
                     }
                 }
@@ -155,5 +149,5 @@ struct WithUnderBarTextFieldStyle: TextFieldStyle {
 
 #Preview {
     let photo = UIImage(resource: .sampleSelfie)
-    InitialFilterMakeView(photo: photo, showInitialViewErrorToast: .constant(false))
+    InitialFilterMakeView(photo: photo)
 }

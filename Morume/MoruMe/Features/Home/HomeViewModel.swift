@@ -15,29 +15,27 @@ final class HomeViewModel {
     var selectedPhoto: UIImage?
     var resultPhoto: UIImage?
 
-    var showErrorToast = false
-    var showSuccessToast = false
+    var toastEvent: ToastState?
 
     func saveResultPhoto() async {
         guard let photo = resultPhoto else {
-            showErrorToast = true
+            toastEvent = ToastState(icon: .errorIcon, message: "エラーが発生しました", type: .error)
             return
         }
 
         let status = await PHPhotoLibrary.requestAuthorization(for: .addOnly)
         guard status == .authorized || status == .limited else {
-            showErrorToast = true
+            toastEvent = ToastState(icon: .errorIcon, message: "エラーが発生しました", type: .error)
             return
         }
 
         UIImageWriteToSavedPhotosAlbum(photo, nil, nil, nil)
-        showSuccessToast = true
+        toastEvent = ToastState(icon: .photoSavedIcon, message: "写真を保存しました", type: .success)
     }
 
     func resetState() {
         selectedPhoto = nil
         resultPhoto = nil
-        showErrorToast = false
-        showSuccessToast = false
+        toastEvent = nil
     }
 }

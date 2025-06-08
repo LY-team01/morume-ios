@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ImageUploadView: View {
+    @Environment(ToastManager.self) private var toastManager
     @State private var viewModel = ImageUploadViewModel()
     @State private var isNavigationActive = false
 
@@ -30,13 +31,15 @@ struct ImageUploadView: View {
                 }
                 .navigationDestination(isPresented: $isNavigationActive) {
                     if let photo = viewModel.selectedPhoto {
-                        FilterEditView(photo: photo, showInitialViewErrorToast: $viewModel.showErrorToast)
+                        FilterEditView(photo: photo)
                     }
                 }
             }
         }
-        .modifier(
-            ToastOverlay(showToast: $viewModel.showErrorToast, icon: .errorIcon, message: "エラーが発生しました", type: .error)
-        )
+        .onChange(of: viewModel.toastEvent) {
+            guard let event = viewModel.toastEvent else { return }
+            toastManager.show(icon: event.icon, message: event.message, type: event.type)
+            viewModel.toastEvent = nil
+        }
     }
 }
